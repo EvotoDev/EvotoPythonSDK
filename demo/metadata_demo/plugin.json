@@ -1,0 +1,8 @@
+{
+    "id": "metadata_demo",
+    "name": "Metadata Automation Demo",
+    "version": "1.0.0",
+    "description": "Demo for metadata read, write, file refresh, and sidecar save APIs.",
+    "entry": "main.py",
+    "dependencies": []
+}

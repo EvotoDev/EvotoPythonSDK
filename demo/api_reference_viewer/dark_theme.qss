@@ -1,0 +1,406 @@
+/* ── Evoto SDK API Reference Viewer - Dark Theme ──────────────────────
+ * Strictly follows plan/EVOTO_PLUGIN_SDK_POPUP_VISUAL_RULES.md:
+ *   Shell bg   : #16181a
+ *   Panel bg   : #232629
+ *   Block bg   : #0000004d
+ *   Text main  : #f3f0e8
+ *   Primary    : #f0c548
+ *   Doc link   : #5da2ff
+ */
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+
+QWidget {
+    background-color: #16181a;
+    color: #f3f0e8;
+    font-size: 12px;
+}
+
+QLabel {
+    background: transparent;
+}
+
+/* ── Scroll Areas ─────────────────────────────────────────────────── */
+
+QScrollArea {
+    border: none;
+    background: transparent;
+}
+
+QScrollBar:vertical {
+    width: 10px;
+    background: transparent;
+    margin: 0;
+}
+
+QScrollBar::handle:vertical {
+    background: rgba(255, 255, 255, 0.14);
+    min-height: 30px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    height: 0;
+    background: transparent;
+}
+
+QScrollBar:horizontal {
+    height: 10px;
+    background: transparent;
+}
+
+QScrollBar::handle:horizontal {
+    background: rgba(255, 255, 255, 0.14);
+    min-width: 30px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    width: 0;
+    background: transparent;
+}
+
+/* ── Top Bar ──────────────────────────────────────────────────────── */
+
+#topBar {
+    background: #16181a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#topBarTitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f3f0e8;
+}
+
+#versionBadge {
+    font-size: 11px;
+    color: rgba(243, 240, 232, 0.64);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 2px 8px;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────── */
+
+#sidebar {
+    background: #16181a;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#sidebarTitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f3f0e8;
+    padding: 16px 14px 6px 14px;
+}
+
+/* ── Content Area ─────────────────────────────────────────────────── */
+
+#contentArea {
+    background: #16181a;
+}
+
+/* ── Overview Page ────────────────────────────────────────────────── */
+
+#overviewTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f0e8;
+    padding: 0;
+    margin: 0;
+}
+
+#overviewSubtitle {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.78);
+    padding: 0;
+    margin: 0;
+}
+
+#importPathLabel {
+    font-size: 12px;
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    color: #f3f0e8;
+    background: #0000004d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+#membersHeader {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f3f0e8;
+    padding: 0;
+}
+
+/* ── Open Demo Button (window-level primary CTA) ──────────────────── */
+
+#openDemoBtn {
+    background: #f0c548;
+    color: #231a00;
+    border: none;
+    border-radius: 14px;
+    padding: 0 16px;
+    font-size: 12px;
+    font-weight: 700;
+    min-height: 28px;
+    min-width: 96px;
+}
+
+#openDemoBtn:hover {
+    background: #f4cd62;
+}
+
+#openDemoBtn:pressed {
+    background: #e5b51e;
+}
+
+#openDemoBtn:disabled {
+    background: rgba(240, 197, 72, 0.24);
+    color: rgba(35, 26, 0, 0.5);
+}
+
+/* ── Detail Page - Qt-doc-style single column ─────────────────────── */
+
+#backBtn {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f3f0e8;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+}
+
+#backBtn:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+#detailTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f0e8;
+}
+
+#detailSubtitle {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.78);
+}
+
+/* Section panel (Signature / Parameters / Returns / Example) */
+#docSection {
+    background: #232629;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+}
+
+#docSectionTitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f3f0e8;
+}
+
+#docSectionSubtitle {
+    font-size: 11px;
+    color: rgba(243, 240, 232, 0.64);
+}
+
+/* Block - inner content surface shared by code/desc/param rows */
+#docBlock {
+    background: #0000004d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+/* Parameter row pieces */
+#paramName {
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    color: #5da2ff;
+}
+
+#paramType {
+    font-size: 12px;
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    color: rgba(243, 240, 232, 0.78);
+}
+
+#paramDefault {
+    font-size: 11px;
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    color: rgba(243, 240, 232, 0.64);
+}
+
+#paramDefaultRequired {
+    font-size: 11px;
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    color: #ef8f8f;
+    font-weight: 700;
+}
+
+#paramDesc {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.78);
+}
+
+#returnsText {
+    font-size: 12px;
+    color: #f3f0e8;
+}
+
+/* Signature / Example code blocks */
+#codeBlock {
+    font-family: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    color: #f3f0e8;
+    background: #0000004d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 10px 12px;
+    selection-background-color: rgba(240, 197, 72, 0.30);
+}
+
+/* ── Welcome / Overview Page ──────────────────────────────────────── */
+
+#welcomeHero {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 rgba(240, 197, 72, 0.14),
+                                stop:1 rgba(93, 162, 255, 0.08));
+    border: 1px solid rgba(240, 197, 72, 0.22);
+    border-radius: 10px;
+}
+
+#heroTitle {
+    font-size: 22px;
+    font-weight: 800;
+    color: #f3f0e8;
+}
+
+#heroSubtitle {
+    font-size: 13px;
+    color: rgba(243, 240, 232, 0.82);
+}
+
+#heroBadge {
+    font-size: 11px;
+    color: rgba(243, 240, 232, 0.82);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 3px 9px;
+}
+
+#secondaryBtn {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f3f0e8;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 28px;
+}
+
+#secondaryBtn:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+#proseText {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.85);
+    line-height: 170%;
+}
+
+#modeTitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: #f3f0e8;
+    padding: 0;
+}
+
+/* Key/value rows inside manifest + demos lists */
+#kvKey {
+    font-size: 12px;
+    color: #f3f0e8;
+}
+
+#kvValue {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.78);
+}
+
+/* Module map cards */
+#moduleCard {
+    background: #0000004d;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+}
+
+#moduleCard:hover {
+    background: rgba(93, 162, 255, 0.08);
+    border-color: rgba(93, 162, 255, 0.35);
+}
+
+#moduleCardTitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: #f3f0e8;
+}
+
+#moduleCardArrow {
+    font-size: 14px;
+    font-weight: 700;
+    color: #5da2ff;
+}
+
+#moduleCardImport {
+    font-size: 11px;
+    color: rgba(243, 240, 232, 0.64);
+}
+
+#moduleCardDesc {
+    font-size: 12px;
+    color: rgba(243, 240, 232, 0.78);
+}
+
+/* Next-steps inline jump buttons */
+#linkBtn {
+    background: transparent;
+    color: #5da2ff;
+    border: 1px solid rgba(93, 162, 255, 0.35);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 26px;
+}
+
+#linkBtn:hover {
+    background: rgba(93, 162, 255, 0.10);
+    border-color: rgba(93, 162, 255, 0.55);
+}
+
+/* ── Splitter ─────────────────────────────────────────────────────── */
+
+QSplitter::handle {
+    background: rgba(255, 255, 255, 0.06);
+    width: 1px;
+}

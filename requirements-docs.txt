@@ -1,0 +1,19 @@
+# Documentation toolchain for Evoto Python SDK.
+#
+# Install with:
+#     pip install -r requirements-docs.txt
+#
+# Local preview:
+#     mkdocs serve
+#
+# Production build:
+#     mkdocs build --strict
+
+mkdocs>=1.6,<2.0
+mkdocs-material>=9.5
+mkdocstrings[python]>=0.27
+mkdocs-gen-files>=0.5
+pymdown-extensions>=10.7
+# Used by scripts/check_chinese.py to honour nested .gitignore files
+# without invoking the ``git`` binary.
+pathspec>=0.10

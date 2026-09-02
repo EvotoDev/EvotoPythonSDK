@@ -1,0 +1,168 @@
+site_name: Evoto Plugin SDK
+site_description: Build plugins for Evoto in Python - high-level Pythonic APIs over the JSON-RPC plugin host.
+site_author: Evoto Team
+# site_url: https://<replace-me-on-deploy>/evoto-plugin-sdk/
+
+repo_url: https://github.com/evoto-dev/EvotoPythonSDK
+repo_name: evoto-dev/EvotoPythonSDK
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+site_dir: site
+strict: true
+use_directory_urls: true
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - search.highlight
+    - search.share
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: amber
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: amber
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/git-alt
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search:
+      lang: en
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_style: google
+            docstring_section_style: table
+            show_root_heading: true
+            show_root_full_path: false
+            show_root_toc_entry: false
+            show_source: true
+            show_signature: true
+            show_signature_annotations: true
+            separate_signature: true
+            line_length: 80
+            members_order: source
+            merge_init_into_class: true
+            # Surface enum members, dataclass fields, and other
+            # attributes that often have no docstring of their own
+            # (e.g. ``FileFormat.JPEG = "jpg"``). Without this they
+            # silently disappear from the rendered page.
+            show_if_no_docstring: true
+            show_attribute_values: true
+            heading_level: 2
+            filters:
+              - "!^_"
+              - "!^__"
+              - "^__init__$"
+              # ``KEY_*`` are internal JSON-key constants on the
+              # ExportOptions builder. They are public attributes (demo
+              # code reads them back out of saved dicts) but are
+              # implementation detail from a plugin-author point of view,
+              # so we keep them out of the rendered API reference.
+              - "!^KEY_"
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Guides:
+      - Threading model: guides/threading-model.md
+      - Connection handshake: guides/connection-handshake.md
+      - Silent mode: guides/silent-mode.md
+      - Plugin manifest: guides/plugin-manifest.md
+      - Error handling: guides/error-handling.md
+      - IPC protocol: guides/ipc-protocol.md
+  - Python API:
+      - api/index.md
+      - evoto: api/evoto.md
+      - evoto.project: api/project.md
+      - evoto.image: api/image.md
+      - evoto.preset: api/preset.md
+      - evoto.export: api/export.md
+      - evoto.export_options: api/export-options.md
+      - evoto.watcher: api/watcher.md
+      - evoto.user: api/user.md
+      - evoto.metadata: api/metadata.md
+      - evoto.library: api/library.md
+      - evoto.culling: api/culling.md
+      - evoto.edit: api/edit.md
+      - evoto.face: api/face.md
+      - evoto.host: api/host.md
+  # Guides filled in by Phase 4:
+  # - Guides:
+  #     - guides/threading-model.md
+  #     - guides/connection-handshake.md
+  #     - guides/plugin-manifest.md
+  #     - guides/error-handling.md
+  #     - guides/ipc-protocol.md
+  # - Demos: demos/index.md
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/python
+      link: https://www.python.org/
+
+copyright: Copyright &copy; Evoto

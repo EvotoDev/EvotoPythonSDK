@@ -1,0 +1,8 @@
+{
+    "id": "face_detect_demo",
+    "name": "Face Detect Demo",
+    "version": "1.0.0",
+    "description": "Demo for the standalone face detect APIs: async model load, model status, and per-image detection.",
+    "entry": "main.py",
+    "dependencies": []
+}

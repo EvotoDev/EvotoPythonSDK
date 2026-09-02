@@ -1,0 +1,4 @@
+{
+  "_comment": "Copy to demo/shared/evoto_env.json to select a non-production Evoto host for all demos. Valid values: pro | pro_pre | test | dev. Missing file or invalid value falls back to pro.",
+  "environment": "pro"
+}

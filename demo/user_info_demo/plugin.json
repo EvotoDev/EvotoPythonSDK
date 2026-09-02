@@ -1,0 +1,8 @@
+{
+    "id": "user_info_demo",
+    "name": "User Info Demo",
+    "version": "1.0.0",
+    "description": "Demo for evoto.user.info(): display name, email, credit balance, cloud usage, subscription / VIP flags.",
+    "entry": "main.py",
+    "dependencies": []
+}

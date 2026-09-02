@@ -1,0 +1,8 @@
+{
+    "id": "culling_demo",
+    "name": "Culling Results Demo",
+    "version": "1.0.0",
+    "description": "Demo for culling status, results, faces, and clusters APIs.",
+    "entry": "main.py",
+    "dependencies": []
+}

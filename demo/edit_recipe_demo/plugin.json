@@ -1,0 +1,8 @@
+{
+    "id": "edit_recipe_demo",
+    "name": "Edit Recipe Demo",
+    "version": "1.0.0",
+    "description": "Demo for edit status, sync, reset, and virtual copy APIs.",
+    "entry": "main.py",
+    "dependencies": []
+}

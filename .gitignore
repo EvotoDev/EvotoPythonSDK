@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# mkdocs build output
+site/
+
+# Local demo environment override (see demo/shared/evoto_env.example.json)
+demo/shared/evoto_env.json
+
+# Editors
+.idea/
+.vscode/

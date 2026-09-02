@@ -1,0 +1,8 @@
+{
+    "id": "preset_export_demo",
+    "name": "Preset Export Demo",
+    "version": "1.0.0",
+    "description": "Demo for DB-based export with preset suit selection and ExportOptions builder",
+    "entry": "main.py",
+    "dependencies": []
+}

@@ -1,0 +1,8 @@
+{
+    "id": "runtime_demo",
+    "name": "Plugin Runtime Demo",
+    "version": "1.0.0",
+    "description": "Demo for plugin runtime helpers: host lifecycle and silent-mode timeout controls.",
+    "entry": "main.py",
+    "dependencies": []
+}

@@ -1,0 +1,8 @@
+{
+    "id": "watcher_demo",
+    "name": "Folder Watcher Demo",
+    "version": "1.0.0",
+    "description": "Interactive demo for folder watching via the Plugin SDK",
+    "entry": "main.py",
+    "dependencies": []
+}

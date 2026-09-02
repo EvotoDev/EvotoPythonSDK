@@ -1,0 +1,4680 @@
+{
+  "MODULE_DATA": {
+    "CullingAPI": {
+      "demo_key": "culling_demo",
+      "import_path": "evoto.culling",
+      "methods": [
+        {
+          "brief": "List culling clusters for a project.",
+          "example": "clusters = evoto.culling.list_clusters(\n    use_current_project=True,\n    image_ids=[101, 202],\n    cluster_type=\"similar\",\n)\nprint('clusters:', len(clusters), clusters[0].get('image_ids') if clusters else [])",
+          "kind": "method",
+          "name": "list_clusters",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to inspect. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit returned clusters. Empty or omitted means all images in the current project."
+            ],
+            [
+              "cluster_type",
+              "str | None",
+              "None",
+              "Optional host cluster type."
+            ]
+          ],
+          "returns": "List of cluster payload dicts.",
+          "signature": "evoto.culling.list_clusters(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None, cluster_type: str | None = None) -> list"
+        },
+        {
+          "brief": "List face records attached to project images.",
+          "example": "from evoto.core.api_fields import CullingField\n\nfaces = evoto.culling.list_faces(\n    use_current_project=True,\n    image_ids=[101, 202],\n)\nprint('faces:', len(faces), faces[0].get(CullingField.FACE_ID) if faces else None)",
+          "kind": "method",
+          "name": "list_faces",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to inspect. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit the result set. Empty or omitted means all images in the current project."
+            ]
+          ],
+          "returns": "List of face payload dicts from the host face records.",
+          "signature": "evoto.culling.list_faces(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None) -> list"
+        },
+        {
+          "brief": "List persisted QR Code scan results.",
+          "example": "",
+          "kind": "method",
+          "name": "list_qr_code_results",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to inspect. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit returned rows. Empty or omitted means all images in the current project."
+            ]
+          ],
+          "returns": "List of rows where QR codes were found. Each row contains ``image_id``, ``absolute_path``, ``qr_code_checked``, ``has_qr_code`` and ``qr_code_content`` (a list of decoded QR code strings).",
+          "signature": "evoto.culling.list_qr_code_results(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None) -> list"
+        },
+        {
+          "brief": "List image-level culling results.",
+          "example": "from evoto.core.api_fields import CullingField\n\nresults = evoto.culling.list_results(\n    use_current_project=True,\n    image_ids=[101, 202],\n    filters={CullingField.AI_SELECTED: True},\n)\nprint('selected:', len(results))",
+          "kind": "method",
+          "name": "list_results",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to inspect. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit the result set. Empty or omitted means all images in the current project."
+            ],
+            [
+              "filters",
+              "CullingResultFilters | None",
+              "None",
+              "Optional image-level culling filters. Supported keys: ``CullingField.AI_SELECTED``, ``CullingField.CANDIDATE``, ``CullingField.BLURRY``, ``CullingField.SHARP``, ``CullingField.CLOSED_EYES``, ``CullingField.OVEREXPOSED``, ``CullingField.UNDEREXPOSED``, ``CullingField.SIMILAR``, ``CullingField.GROUP_ID`` and ``CullingField.CLUSTER_ID``. Example: ``{CullingField.AI_SELECTED: True, CullingField.SHARP: True}``."
+            ]
+          ],
+          "returns": "List of image-level culling result payload dicts.",
+          "signature": "evoto.culling.list_results(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None, filters: CullingResultFilters | None = None) -> list"
+        },
+        {
+          "brief": "Request culling restart.",
+          "example": "result = evoto.culling.restart(\n    use_current_project=True,\n)\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "restart",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to process. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "mode",
+              "str | None",
+              "None",
+              "Optional host culling mode."
+            ]
+          ],
+          "returns": "Host acceptance or skipped payload.",
+          "signature": "evoto.culling.restart(project_id: int | None = None, *, use_current_project: bool = False, mode: str | None = None) -> dict"
+        },
+        {
+          "brief": "Scan project images for QR Codes.",
+          "example": "",
+          "kind": "method",
+          "name": "scan_qr_codes",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to process. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit the scan. Empty or omitted means all images in the current project."
+            ],
+            [
+              "force",
+              "bool",
+              "False",
+              "Re-scan images even when they were checked before."
+            ]
+          ],
+          "returns": "Payload with ``task_id``, ``project_id``, ``status``, ``success`` and ``results``. The ``results`` array only contains images where QR codes were found. Each result row has ``image_id``, ``absolute_path``, ``qr_code_checked``, ``has_qr_code`` and ``qr_code_content`` (a list of decoded QR code strings).",
+          "signature": "evoto.culling.scan_qr_codes(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None, force: bool = False) -> dict"
+        },
+        {
+          "brief": "Request culling start.",
+          "example": "result = evoto.culling.start(\n    use_current_project=True,\n)\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "start",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to process. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "mode",
+              "str | None",
+              "None",
+              "Optional host culling mode."
+            ]
+          ],
+          "returns": "Host acceptance payload.",
+          "signature": "evoto.culling.start(project_id: int | None = None, *, use_current_project: bool = False, mode: str | None = None) -> dict"
+        },
+        {
+          "brief": "Return culling status for a project.",
+          "example": "status = evoto.culling.status(\n    use_current_project=True,\n)\nprint(status.get('status'))",
+          "kind": "method",
+          "name": "status",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to inspect. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to limit the status counts. Empty or omitted means all images in the current project."
+            ]
+          ],
+          "returns": "Host status payload. The ``status`` field uses :class:`evoto.core.api_fields.CullingStatusValue` values.",
+          "signature": "evoto.culling.status(project_id: int | None = None, *, use_current_project: bool = False, image_ids: list[int] | None = None) -> dict"
+        },
+        {
+          "brief": "Request culling stop.",
+          "example": "",
+          "kind": "method",
+          "name": "stop",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to stop. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the host's current project."
+            ]
+          ],
+          "returns": "Host stop acceptance or skipped payload.",
+          "signature": "evoto.culling.stop(project_id: int | None = None, *, use_current_project: bool = False) -> dict"
+        }
+      ],
+      "subtitle": "Read culling status, image-level results, face records, and clusters. Reached as ``evoto.culling``.",
+      "title": "CullingAPI - Culling Results"
+    },
+    "EditAPI": {
+      "demo_key": "edit_recipe_demo",
+      "import_path": "evoto.edit",
+      "methods": [
+        {
+          "brief": "Create a virtual copy for one image in the current project.",
+          "example": "result = evoto.edit.create_virtual_copy(101)\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "create_virtual_copy",
+          "params": [
+            [
+              "image_id",
+              "int",
+              "required",
+              "Source image ID."
+            ]
+          ],
+          "returns": "Host workflow response with batch counts and per-image items. The host queues the existing product virtual-copy workflow and reports the source image as accepted when the request is submitted.",
+          "signature": "evoto.edit.create_virtual_copy(image_id: int) -> dict"
+        },
+        {
+          "brief": "Reset edit effects for image IDs.",
+          "example": "from evoto.core.api_fields import EditModuleValue\n\nresult = evoto.edit.reset(\n    [101, 202],\n    modules=[EditModuleValue.BACKGROUND],\n)\nprint(result.get('status'), result.get('accepted_count'), result.get('skipped_count'))",
+          "kind": "method",
+          "name": "reset",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to reset."
+            ],
+            [
+              "modules",
+              "list[str] | None",
+              "None",
+              "Optional module names from :class:`evoto.core.api_fields.EditModuleValue`."
+            ]
+          ],
+          "returns": "Host workflow response with accepted/skipped/failed counts and per-image items. When ``modules`` is provided, the host applies default parameters for those modules and leaves other modules unchanged. When omitted, the host resets all effects.",
+          "signature": "evoto.edit.reset(image_ids: list[int], modules: list[str] | None = None) -> dict"
+        },
+        {
+          "brief": "Return edit status summaries.",
+          "example": "summaries = evoto.edit.status(12345, image_ids=[101, 202])\nfor item in summaries:\n    print(item['image_id'], item.get('has_edit'), item.get('has_color'), item.get('has_crop'))",
+          "kind": "method",
+          "name": "status",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Project ID to inspect."
+            ],
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to inspect. Omit to inspect all non-recycled images in the project."
+            ]
+          ],
+          "returns": "List of per-image edit summary payload dicts. Each item may include ``has_edit``, ``has_color``, ``has_ai_color``, ``has_portrait``, ``has_background``, ``has_crop``, ``has_clothes``, ``has_pet``, and ``has_preset``.",
+          "signature": "evoto.edit.status(project_id: int, image_ids: list[int] | None = None) -> list[dict]"
+        },
+        {
+          "brief": "Sync the current source edit recipe to target images.",
+          "example": "from evoto.core.api_fields import EditModuleValue\n\nresult = evoto.edit.sync_from(\n    101,\n    [202, 303],\n    modules=[EditModuleValue.COLOR, EditModuleValue.PORTRAIT],\n)\nprint(result.get('status'), result.get('reason'), result.get('skipped_count'))",
+          "kind": "method",
+          "name": "sync_from",
+          "params": [
+            [
+              "source_image_id",
+              "int",
+              "required",
+              "Source image ID."
+            ],
+            [
+              "target_image_ids",
+              "list[int]",
+              "required",
+              "Target image IDs."
+            ],
+            [
+              "modules",
+              "list[str] | None",
+              "None",
+              "Optional module names from :class:`evoto.core.api_fields.EditModuleValue`."
+            ]
+          ],
+          "returns": "Host workflow response with accepted/skipped/failed counts and per-image items. When ``modules`` is provided, those module names override the host saved/default sync settings. When omitted, the host uses its saved or default sync settings.",
+          "signature": "evoto.edit.sync_from(source_image_id: int, target_image_ids: list[int], modules: list[str] | None = None) -> dict"
+        }
+      ],
+      "subtitle": "Read edit summaries, with guarded edit workflows returning explicit host responses. Reached as ``evoto.edit``.",
+      "title": "EditAPI - Edit Summaries"
+    },
+    "ExportAPI": {
+      "demo_key": "preset_export_demo",
+      "import_path": "evoto.export",
+      "methods": [
+        {
+          "brief": "Delete an export task.",
+          "example": "evoto.export.delete(42)",
+          "kind": "method",
+          "name": "delete",
+          "params": [
+            [
+              "export_dir_id",
+              "int",
+              "required",
+              "Export task ID to delete from the task list."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"export_dir_id\": export_dir_id}``.",
+          "signature": "evoto.export.delete(export_dir_id: int) -> dict"
+        },
+        {
+          "brief": "List available export setting presets (saved export configurations).",
+          "example": "presets = evoto.export.list_export_presets()\nfor p in presets:\n    print(p['name'], p['uuid'])",
+          "kind": "method",
+          "name": "list_export_presets",
+          "params": [],
+          "returns": "List of export preset info dicts.",
+          "signature": "evoto.export.list_export_presets() -> list[dict]"
+        },
+        {
+          "brief": "Unregister an ``export.completed`` event callback (or all of them when ``callback`` is omitted).",
+          "example": "evoto.export.off_completed()",
+          "kind": "method",
+          "name": "off_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all completed-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.off_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister an ``export.failed`` event callback (or all of them when ``callback`` is omitted).",
+          "example": "evoto.export.off_failed()",
+          "kind": "method",
+          "name": "off_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all failed-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.off_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister an ``export.item_finished`` event callback (or all of them when ``callback`` is omitted).",
+          "example": "evoto.export.off_item_finished()",
+          "kind": "method",
+          "name": "off_item_finished",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all item-finished callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.off_item_finished(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister an ``export.progress`` event callback (or all of them when ``callback`` is omitted).",
+          "example": "evoto.export.off_progress()",
+          "kind": "method",
+          "name": "off_progress",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all progress-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.off_progress(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister an ``export.started`` event callback (or all of them when ``callback`` is omitted).",
+          "example": "evoto.export.off_started()",
+          "kind": "method",
+          "name": "off_started",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all started-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.off_started(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Subscribe to ``export.completed`` events.",
+          "example": "evoto.export.on_completed(lambda d: print('All done!'))",
+          "kind": "method",
+          "name": "on_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called with the completed export payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.on_completed(callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``export.failed`` events.",
+          "example": "def on_failed(data):\n    print('Export failed:', data.get('message'))\n\nevoto.export.on_failed(on_failed)",
+          "kind": "method",
+          "name": "on_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called with the failed export payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.on_failed(callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``export.item_finished`` events.",
+          "example": "def on_item(data):\n    print('Item done:', data.get('output_path'))\n\nevoto.export.on_item_finished(on_item)",
+          "kind": "method",
+          "name": "on_item_finished",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called when one export item finishes."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.on_item_finished(callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``export.progress`` events.",
+          "example": "def on_progress(data):\n    print(f\"Progress: {data['progress']}%\")\n\nevoto.export.on_progress(on_progress)",
+          "kind": "method",
+          "name": "on_progress",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called whenever export progress changes."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.on_progress(callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``export.started`` events.",
+          "example": "def on_started(data):\n    print('Export started:', data)\n\nevoto.export.on_started(on_started)",
+          "kind": "method",
+          "name": "on_started",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called with the started export payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.export.on_started(callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Pause an in-progress export task.",
+          "example": "evoto.export.pause(42)",
+          "kind": "method",
+          "name": "pause",
+          "params": [
+            [
+              "export_dir_id",
+              "int",
+              "required",
+              "Export task ID returned by :meth:`start_with_custom`, :meth:`start_with_export_preset`, or :meth:`query`."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"export_dir_id\": export_dir_id}``.",
+          "signature": "evoto.export.pause(export_dir_id: int) -> dict"
+        },
+        {
+          "brief": "Query export task state from the host.",
+          "example": "status = evoto.export.query(export_dir_id=42)",
+          "kind": "method",
+          "name": "query",
+          "params": [
+            [
+              "export_listener_uuid",
+              "str | None",
+              "None",
+              "Find all tasks with this listener UUID."
+            ],
+            [
+              "export_dir_id",
+              "int | None",
+              "None",
+              "Find a specific task by its export_dir_id."
+            ],
+            [
+              "include_items",
+              "bool",
+              "False",
+              "Include per-image export result details in each task."
+            ]
+          ],
+          "returns": "``{success, items: [{export_dir_id, export_name, state, progress, items?, ...}]}``. ``state`` is the task state, such as ``running``, ``paused``, ``completed``, or ``failed``. Failed tasks include ``message``, ``error_message``, ``error_code``, and ``failed_items`` when the host has item-level failure details.",
+          "signature": "evoto.export.query(*, export_listener_uuid: str | None = None, export_dir_id: int | None = None, include_items: bool = False) -> dict"
+        },
+        {
+          "brief": "Resume a paused export task.",
+          "example": "evoto.export.resume(42)",
+          "kind": "method",
+          "name": "resume",
+          "params": [
+            [
+              "export_dir_id",
+              "int",
+              "required",
+              "Export task ID to resume."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"export_dir_id\": export_dir_id}``.",
+          "signature": "evoto.export.resume(export_dir_id: int) -> dict"
+        },
+        {
+          "brief": "Retry failed items in an export task.",
+          "example": "evoto.export.retry(42)",
+          "kind": "method",
+          "name": "retry",
+          "params": [
+            [
+              "export_dir_id",
+              "int",
+              "required",
+              "Export task ID whose failed items should be retried."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"export_dir_id\": export_dir_id}``.",
+          "signature": "evoto.export.retry(export_dir_id: int) -> dict"
+        },
+        {
+          "brief": "Export images using one or more preset suits.",
+          "example": "from evoto.export_options import ExportOptions, FileFormat\n\nmatches = evoto.preset.find_by_name(\"Soft Light\")\nsuit_id = next(\n    item[\"id\"] for item in matches\n    if item[\"className\"] == \"Portrait\"\n)\n\nopts = (ExportOptions()\n    .file_format(FileFormat.JPEG)\n    .quality(90)\n    .build())\n\nresult = evoto.export.start_with_custom(\n    project_id=12345,\n    export_dir=\"/output\",\n    preset_suit_ids=[suit_id],\n    imageIds=[101, 202],\n    options=opts,\n)\nprint(\"Export accepted:\", result)",
+          "kind": "method",
+          "name": "start_with_custom",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Target project ID."
+            ],
+            [
+              "export_dir",
+              "str",
+              "required",
+              "Destination directory path."
+            ],
+            [
+              "preset_suit_ids",
+              "list[str]",
+              "required",
+              "One or more preset suit IDs to apply."
+            ],
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "Image IDs to export."
+            ],
+            [
+              "export_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID tag for event filtering and reconnect recovery."
+            ],
+            [
+              "options",
+              "dict | None",
+              "None",
+              "Optional overrides built with :class:`~evoto.export_options.ExportOptions`."
+            ]
+          ],
+          "returns": "Host acceptance response including ``accepted``, ``export_dir_id``, ``export_dir`` and ``requested_count``. Use :meth:`query` or export lifecycle events for ``export_name`` and per-item details. The response is returned only after required effect presets are ready; the export then continues asynchronously with the existing event contract. If preparation fails, the call raises ``ApiError`` instead of returning an acceptance response: code ``404`` identifies an unknown suit ID, and code ``503`` identifies a download or local validation failure.",
+          "signature": "evoto.export.start_with_custom(project_id: int, export_dir: str, preset_suit_ids: list[str], *, imageIds: list[int], export_listener_uuid: str | None = None, options: dict | None = None) -> dict"
+        },
+        {
+          "brief": "Export images using saved export setting preset(s).",
+          "example": "result = evoto.export.start_with_export_preset(\n    project_id=12345,\n    export_preset_ids=[\"preset_uuid_1\"],\n    imageIds=[101, 202],\n)\nprint(\"Export accepted:\", result)",
+          "kind": "method",
+          "name": "start_with_export_preset",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Target project ID."
+            ],
+            [
+              "export_preset_ids",
+              "list[str]",
+              "required",
+              "One or more export setting preset UUIDs (obtained from :meth:`list_export_presets`)."
+            ],
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "Image IDs to export."
+            ],
+            [
+              "preset_suit_ids",
+              "list[str] | None",
+              "None",
+              "Optional effect preset IDs to override the export preset's built-in effect preset configuration."
+            ],
+            [
+              "export_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID tag for event filtering."
+            ]
+          ],
+          "returns": "Host acceptance response including ``accepted``, ``export_dir_id`` and ``requested_count``. Use :meth:`query` or export lifecycle events for ``export_name`` and per-item details. The response is returned only after required effect presets are ready; the export then continues asynchronously with the existing event contract. If preparation fails, the call raises ``ApiError`` instead of returning an acceptance response: code ``404`` identifies an unknown suit ID, and code ``503`` identifies a download or local validation failure.",
+          "signature": "evoto.export.start_with_export_preset(project_id: int, export_preset_ids: list[str], *, imageIds: list[int], preset_suit_ids: list[str] | None = None, export_listener_uuid: str | None = None) -> dict"
+        },
+        {
+          "brief": "Subscribe to export lifecycle events on the host.",
+          "example": "evoto.export.subscribe()",
+          "kind": "method",
+          "name": "subscribe",
+          "params": [
+            [
+              "export_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID filter. Only exports started with the same UUID will trigger events for this subscriber."
+            ]
+          ],
+          "returns": "``{subscribed: true}``",
+          "signature": "evoto.export.subscribe(export_listener_uuid: str | None = None) -> dict"
+        },
+        {
+          "brief": "Unsubscribe from export lifecycle events.",
+          "example": "evoto.export.unsubscribe()",
+          "kind": "method",
+          "name": "unsubscribe",
+          "params": [],
+          "returns": "``{unsubscribed: true}``",
+          "signature": "evoto.export.unsubscribe() -> dict"
+        },
+        {
+          "brief": "Block until the export identified by *export_dir_id* finishes.",
+          "example": "result = evoto.export.wait_for_completion(\n    export_dir_id=42,\n    on_progress=lambda p: print(f'{p:.0f}%'),\n    timeout=300,\n)",
+          "kind": "method",
+          "name": "wait_for_completion",
+          "params": [
+            [
+              "export_dir_id",
+              "int",
+              "required",
+              "The ``export_dir_id`` returned by :meth:`start_with_custom` or :meth:`start_with_export_preset`."
+            ],
+            [
+              "on_progress",
+              "Callable[[float], NoneType] | None",
+              "None",
+              "Optional callback receiving progress percentage (0-100)."
+            ],
+            [
+              "on_item",
+              "Callable[[dict], NoneType] | None",
+              "None",
+              "Optional callback receiving each ``export.item_finished`` payload."
+            ],
+            [
+              "timeout",
+              "float",
+              "600",
+              "Maximum seconds to wait."
+            ]
+          ],
+          "returns": "The final event payload (completed or failed).",
+          "signature": "evoto.export.wait_for_completion(export_dir_id: int, *, on_progress: Callable[[float], NoneType] | None = None, on_item: Callable[[dict], NoneType] | None = None, timeout: float = 600) -> dict"
+        }
+      ],
+      "subtitle": "Run exports, follow lifecycle, retry / pause / resume. Reached as ``evoto.export``.",
+      "title": "ExportAPI - Image Export"
+    },
+    "ExportOptions": {
+      "demo_key": "preset_export_demo",
+      "import_path": "from evoto import ExportOptions",
+      "methods": [
+        {
+          "brief": "Return the assembled options dict.",
+          "example": "opts = (ExportOptions()\n    .file_format(FileFormat.JPEG)\n    .quality(90)\n    .scale_long_edge(3000)\n    .dpi(300)\n    .sharpen(SharpenType.SCREEN, SharpenAmount.STANDARD)\n    .naming(NamingFormat.ORIGINAL_CUSTOM, suffix=\"_edited\")\n    .exist_format(ExistFormat.ADD_SUFFIX)\n    .build())",
+          "kind": "method",
+          "name": "build",
+          "params": [],
+          "returns": "None",
+          "signature": "ExportOptions.build() -> dict"
+        },
+        {
+          "brief": "Create a sub-directory inside the export directory.",
+          "example": ".create_subdir(\"batch_01\")",
+          "kind": "method",
+          "name": "create_subdir",
+          "params": [
+            [
+              "name",
+              "str",
+              "required",
+              "Sub-directory name to create under the selected export directory."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.create_subdir(name: str) -> ExportOptions"
+        },
+        {
+          "brief": "Set output DPI metadata.",
+          "example": ".dpi(300)",
+          "kind": "method",
+          "name": "dpi",
+          "params": [
+            [
+              "value",
+              "int",
+              "required",
+              "Resolution value. ``300`` is a common print default."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.dpi(value: int) -> ExportOptions"
+        },
+        {
+          "brief": "Set whether *dpi* is interpreted as pixels per inch or per cm.",
+          "example": ".dpi(300).dpi_unit(DpiUnit.CM)",
+          "kind": "method",
+          "name": "dpi_unit",
+          "params": [
+            [
+              "unit",
+              "DpiUnit | str",
+              "required",
+              "``DpiUnit.INCH`` (``\"in\"``, px/in) or ``DpiUnit.CM`` (``\"cm\"``, px/cm)."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.dpi_unit(unit: DpiUnit | str) -> ExportOptions"
+        },
+        {
+          "brief": "Set behaviour when output file exists.",
+          "example": ".exist_format(ExistFormat.ADD_SUFFIX)",
+          "kind": "method",
+          "name": "exist_format",
+          "params": [
+            [
+              "fmt",
+              "ExistFormat | str",
+              "required",
+              "Conflict resolution strategy, e.g. ``ExistFormat.REPLACE``."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.exist_format(fmt: ExistFormat | str) -> ExportOptions"
+        },
+        {
+          "brief": "Set the output image format.",
+          "example": ".file_format(FileFormat.JPEG)",
+          "kind": "method",
+          "name": "file_format",
+          "params": [
+            [
+              "fmt",
+              "FileFormat | str",
+              "required",
+              "Target format, e.g. ``FileFormat.JPEG``."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.file_format(fmt: FileFormat | str) -> ExportOptions"
+        },
+        {
+          "brief": "Limit output file size in megabytes.",
+          "example": ".limit_size(5.0)",
+          "kind": "method",
+          "name": "limit_size",
+          "params": [
+            [
+              "mb",
+              "float",
+              "required",
+              "Target maximum file size in megabytes. Must be greater than zero."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.limit_size(mb: float) -> ExportOptions"
+        },
+        {
+          "brief": "Configure output file naming.",
+          "example": ".naming(NamingFormat.ORIGINAL_CUSTOM, suffix=\"_edited\")",
+          "kind": "method",
+          "name": "naming",
+          "params": [
+            [
+              "fmt",
+              "NamingFormat | str",
+              "required",
+              "Naming pattern, e.g. ``NamingFormat.ORIGINAL``."
+            ],
+            [
+              "prefix",
+              "str",
+              "''",
+              "Custom prefix string."
+            ],
+            [
+              "start",
+              "int",
+              "1",
+              "Starting sequence number."
+            ],
+            [
+              "suffix",
+              "str",
+              "''",
+              "Custom suffix string."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.naming(fmt: NamingFormat | str, *, prefix: str = '', start: int = 1, suffix: str = '') -> ExportOptions"
+        },
+        {
+          "brief": "Set JPEG quality percentage.",
+          "example": ".quality(90)",
+          "kind": "method",
+          "name": "quality",
+          "params": [
+            [
+              "percent",
+              "int",
+              "required",
+              "JPEG quality from ``1`` to ``100``. Higher values keep more detail and create larger files."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.quality(percent: int) -> ExportOptions"
+        },
+        {
+          "brief": "Scale so the long edge equals ``px`` pixels.",
+          "example": ".scale_long_edge(3000)",
+          "kind": "method",
+          "name": "scale_long_edge",
+          "params": [
+            [
+              "px",
+              "int",
+              "required",
+              "Target long-edge length in pixels."
+            ],
+            [
+              "never_upscale",
+              "bool",
+              "True",
+              "When true, do not enlarge images beyond their original pixel dimensions."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.scale_long_edge(px: int, *, never_upscale: bool = True) -> ExportOptions"
+        },
+        {
+          "brief": "Scale by percentage.",
+          "example": ".scale_percent(0.5)",
+          "kind": "method",
+          "name": "scale_percent",
+          "params": [
+            [
+              "pct",
+              "float",
+              "required",
+              "Scale ratio, for example ``0.5`` for 50% or ``1.0`` for original size."
+            ],
+            [
+              "never_upscale",
+              "bool",
+              "True",
+              "When true, do not enlarge images beyond their original pixel dimensions."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.scale_percent(pct: float, *, never_upscale: bool = True) -> ExportOptions"
+        },
+        {
+          "brief": "Scale so the short edge equals ``px`` pixels.",
+          "example": ".scale_short_edge(1080)",
+          "kind": "method",
+          "name": "scale_short_edge",
+          "params": [
+            [
+              "px",
+              "int",
+              "required",
+              "Target short-edge length in pixels."
+            ],
+            [
+              "never_upscale",
+              "bool",
+              "True",
+              "When true, do not enlarge images beyond their original pixel dimensions."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.scale_short_edge(px: int, *, never_upscale: bool = True) -> ExportOptions"
+        },
+        {
+          "brief": "Set dimension unit for width/height/long-edge/short-edge values.",
+          "example": ".scale_unit(ScaleUnit.INCH).scale_long_edge(10)",
+          "kind": "method",
+          "name": "scale_unit",
+          "params": [
+            [
+              "unit",
+              "ScaleUnit | str",
+              "required",
+              "``ScaleUnit.PIXEL`` (``\"px\"``), ``ScaleUnit.INCH`` (``\"in\"``), or ``ScaleUnit.CM`` (``\"cm\"``)."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.scale_unit(unit: ScaleUnit | str) -> ExportOptions"
+        },
+        {
+          "brief": "Scale to explicit width and height in pixels.",
+          "example": ".scale_width_height(1920, 1080)",
+          "kind": "method",
+          "name": "scale_width_height",
+          "params": [
+            [
+              "w",
+              "int",
+              "required",
+              "Target width in pixels."
+            ],
+            [
+              "h",
+              "int",
+              "required",
+              "Target height in pixels."
+            ],
+            [
+              "never_upscale",
+              "bool",
+              "True",
+              "When true, do not enlarge images beyond their original pixel dimensions."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.scale_width_height(w: int, h: int, *, never_upscale: bool = True) -> ExportOptions"
+        },
+        {
+          "brief": "Enable output sharpening.",
+          "example": ".sharpen(SharpenType.SCREEN, SharpenAmount.STANDARD)",
+          "kind": "method",
+          "name": "sharpen",
+          "params": [
+            [
+              "stype",
+              "SharpenType | str",
+              "required",
+              "Sharpening mode, e.g. ``SharpenType.SCREEN``."
+            ],
+            [
+              "amount",
+              "SharpenAmount | str",
+              "SharpenAmount.STANDARD",
+              "Sharpening strength, e.g. ``SharpenAmount.HIGH``."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.sharpen(stype: SharpenType | str, amount: SharpenAmount | str = SharpenAmount.STANDARD) -> ExportOptions"
+        },
+        {
+          "brief": "Enable watermark overlay.",
+          "example": ".watermark(\"/logo.png\", position=WatermarkPosition.BOTTOM_RIGHT)",
+          "kind": "method",
+          "name": "watermark",
+          "params": [
+            [
+              "path",
+              "str",
+              "required",
+              "Absolute path to the watermark image file."
+            ],
+            [
+              "position",
+              "WatermarkPosition | int",
+              "WatermarkPosition.BOTTOM_RIGHT",
+              "Anchor position on a 3x3 grid, e.g. ``WatermarkPosition.BOTTOM_RIGHT``."
+            ],
+            [
+              "size",
+              "int",
+              "10",
+              "Watermark size as percentage (0-100)."
+            ],
+            [
+              "opacity",
+              "int",
+              "100",
+              "Watermark opacity (0-100)."
+            ],
+            [
+              "rotation",
+              "int",
+              "0",
+              "Rotation angle in degrees."
+            ],
+            [
+              "h_offset",
+              "int",
+              "3",
+              "Horizontal offset percentage."
+            ],
+            [
+              "v_offset",
+              "int",
+              "3",
+              "Vertical offset percentage."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.watermark(path: str, *, position: WatermarkPosition | int = WatermarkPosition.BOTTOM_RIGHT, size: int = 10, opacity: int = 100, rotation: int = 0, h_offset: int = 3, v_offset: int = 3) -> ExportOptions"
+        },
+        {
+          "brief": "DPI / resolution metadata unit. Values: INCH, CM",
+          "example": "",
+          "kind": "enum",
+          "name": "DpiUnit",
+          "params": [
+            [
+              "INCH",
+              "str",
+              "'in'",
+              "DPI / resolution metadata unit."
+            ],
+            [
+              "CM",
+              "str",
+              "'cm'",
+              "DPI / resolution metadata unit."
+            ]
+          ],
+          "returns": "",
+          "signature": "class DpiUnit(str)"
+        },
+        {
+          "brief": "Behaviour when the output file already exists. Values: ADD_SUFFIX, SKIP, REPLACE",
+          "example": "",
+          "kind": "enum",
+          "name": "ExistFormat",
+          "params": [
+            [
+              "ADD_SUFFIX",
+              "str",
+              "'add_suffix'",
+              "Behaviour when the output file already exists."
+            ],
+            [
+              "SKIP",
+              "str",
+              "'skip'",
+              "Behaviour when the output file already exists."
+            ],
+            [
+              "REPLACE",
+              "str",
+              "'replace'",
+              "Behaviour when the output file already exists."
+            ]
+          ],
+          "returns": "",
+          "signature": "class ExistFormat(str)"
+        },
+        {
+          "brief": "Export image format. Values: ORIGINAL, JPEG, PNG, TIFF_8BIT, TIFF_16BIT",
+          "example": "",
+          "kind": "enum",
+          "name": "FileFormat",
+          "params": [
+            [
+              "ORIGINAL",
+              "str",
+              "'original'",
+              "Export image format."
+            ],
+            [
+              "JPEG",
+              "str",
+              "'jpg'",
+              "Export image format."
+            ],
+            [
+              "PNG",
+              "str",
+              "'png'",
+              "Export image format."
+            ],
+            [
+              "TIFF_8BIT",
+              "str",
+              "'tiff_8bit'",
+              "Export image format."
+            ],
+            [
+              "TIFF_16BIT",
+              "str",
+              "'tiff_16bit'",
+              "Export image format."
+            ]
+          ],
+          "returns": "",
+          "signature": "class FileFormat(str)"
+        },
+        {
+          "brief": "Output file naming pattern. Values: ORIGINAL, CUSTOM_1OF2, CAPTURE_DATE, CUSTOM_SEQUENCE, ORIGINAL_CUSTOM",
+          "example": "",
+          "kind": "enum",
+          "name": "NamingFormat",
+          "params": [
+            [
+              "ORIGINAL",
+              "str",
+              "'original'",
+              "Output file naming pattern."
+            ],
+            [
+              "CUSTOM_1OF2",
+              "str",
+              "'custom_1of2'",
+              "Output file naming pattern."
+            ],
+            [
+              "CAPTURE_DATE",
+              "str",
+              "'capture_date'",
+              "Output file naming pattern."
+            ],
+            [
+              "CUSTOM_SEQUENCE",
+              "str",
+              "'custom_sequence'",
+              "Output file naming pattern."
+            ],
+            [
+              "ORIGINAL_CUSTOM",
+              "str",
+              "'original_custom'",
+              "Output file naming pattern."
+            ]
+          ],
+          "returns": "",
+          "signature": "class NamingFormat(str)"
+        },
+        {
+          "brief": "Quality control mode. Values: SIZE, PERCENT",
+          "example": "",
+          "kind": "enum",
+          "name": "QualityType",
+          "params": [
+            [
+              "SIZE",
+              "str",
+              "'size'",
+              "Quality control mode."
+            ],
+            [
+              "PERCENT",
+              "str",
+              "'percent'",
+              "Quality control mode."
+            ]
+          ],
+          "returns": "",
+          "signature": "class QualityType(str)"
+        },
+        {
+          "brief": "Scale mode. Values: NONE, PERCENT, WIDTH_HEIGHT, LONG_EDGE, SHORT_EDGE",
+          "example": "",
+          "kind": "enum",
+          "name": "ScaleType",
+          "params": [
+            [
+              "NONE",
+              "str",
+              "'none'",
+              "Scale mode."
+            ],
+            [
+              "PERCENT",
+              "str",
+              "'percent'",
+              "Scale mode."
+            ],
+            [
+              "WIDTH_HEIGHT",
+              "str",
+              "'width_height'",
+              "Scale mode."
+            ],
+            [
+              "LONG_EDGE",
+              "str",
+              "'long_edge'",
+              "Scale mode."
+            ],
+            [
+              "SHORT_EDGE",
+              "str",
+              "'short_edge'",
+              "Scale mode."
+            ]
+          ],
+          "returns": "",
+          "signature": "class ScaleType(str)"
+        },
+        {
+          "brief": "Scale display unit (width/height/long edge dimensions). Values: PIXEL, INCH, CM",
+          "example": "",
+          "kind": "enum",
+          "name": "ScaleUnit",
+          "params": [
+            [
+              "PIXEL",
+              "str",
+              "'px'",
+              "Scale display unit (width/height/long edge dimensions)."
+            ],
+            [
+              "INCH",
+              "str",
+              "'in'",
+              "Scale display unit (width/height/long edge dimensions)."
+            ],
+            [
+              "CM",
+              "str",
+              "'cm'",
+              "Scale display unit (width/height/long edge dimensions)."
+            ]
+          ],
+          "returns": "",
+          "signature": "class ScaleUnit(str)"
+        },
+        {
+          "brief": "Sharpening strength. Values: STANDARD, LOW, HIGH",
+          "example": "",
+          "kind": "enum",
+          "name": "SharpenAmount",
+          "params": [
+            [
+              "STANDARD",
+              "str",
+              "'standard'",
+              "Sharpening strength."
+            ],
+            [
+              "LOW",
+              "str",
+              "'low'",
+              "Sharpening strength."
+            ],
+            [
+              "HIGH",
+              "str",
+              "'high'",
+              "Sharpening strength."
+            ]
+          ],
+          "returns": "",
+          "signature": "class SharpenAmount(str)"
+        },
+        {
+          "brief": "Output sharpening mode. Values: NONE, SCREEN, PRINT",
+          "example": "",
+          "kind": "enum",
+          "name": "SharpenType",
+          "params": [
+            [
+              "NONE",
+              "str",
+              "'none'",
+              "Output sharpening mode."
+            ],
+            [
+              "SCREEN",
+              "str",
+              "'screen'",
+              "Output sharpening mode."
+            ],
+            [
+              "PRINT",
+              "str",
+              "'print'",
+              "Output sharpening mode."
+            ]
+          ],
+          "returns": "",
+          "signature": "class SharpenType(str)"
+        },
+        {
+          "brief": "Watermark anchor position (3 x 3 grid). Values: TOP_LEFT, TOP_CENTER, TOP_RIGHT, MIDDLE_LEFT, MIDDLE_CENTER, MIDDLE_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT",
+          "example": "",
+          "kind": "enum",
+          "name": "WatermarkPosition",
+          "params": [
+            [
+              "TOP_LEFT",
+              "int",
+              "1",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "TOP_CENTER",
+              "int",
+              "2",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "TOP_RIGHT",
+              "int",
+              "3",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "MIDDLE_LEFT",
+              "int",
+              "4",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "MIDDLE_CENTER",
+              "int",
+              "5",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "MIDDLE_RIGHT",
+              "int",
+              "6",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "BOTTOM_LEFT",
+              "int",
+              "7",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "BOTTOM_CENTER",
+              "int",
+              "8",
+              "Watermark anchor position (3 x 3 grid)."
+            ],
+            [
+              "BOTTOM_RIGHT",
+              "int",
+              "9",
+              "Watermark anchor position (3 x 3 grid)."
+            ]
+          ],
+          "returns": "",
+          "signature": "class WatermarkPosition(IntEnum)"
+        }
+      ],
+      "subtitle": "Builder + enums for the ``options`` dict accepted by ``ExportAPI.start_with_custom``. Spells out every legal value the host accepts.",
+      "title": "ExportOptions - Builder & Enums"
+    },
+    "FaceAPI": {
+      "demo_key": "face_detect_demo",
+      "import_path": "evoto.face",
+      "methods": [
+        {
+          "brief": "Ask the running detect task to stop.",
+          "example": "",
+          "kind": "method",
+          "name": "cancel_detect",
+          "params": [
+            [
+              "task_id",
+              "str | None",
+              "None",
+              "Task to cancel. Omit to cancel whatever is running."
+            ],
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "Payload with ``task_id``, ``accepted`` and ``status``. ``accepted`` is False when the task had already finished, which is not an error.",
+          "signature": "evoto.face.cancel_detect(task_id: str | None = None, *, timeout: float = 10.0) -> FaceTaskState"
+        },
+        {
+          "brief": "Start a detect task and return immediately with its ``task_id``.",
+          "example": "",
+          "kind": "method",
+          "name": "detect",
+          "params": [
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Image IDs to detect. Takes priority over the project arguments."
+            ],
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Detect every non-deleted image of this project. Used only when ``image_ids`` is empty."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Resolve the project from the host UI instead of passing ``project_id``."
+            ],
+            [
+              "auto_load_model",
+              "bool",
+              "True",
+              "Load the model on demand when it is not ready. Pass False to fail fast with a 412 error instead. Note the on-demand load happens inside the task, so the model load time counts towards the task, not towards this call."
+            ],
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "RPC timeout in seconds for the acceptance reply only."
+            ]
+          ],
+          "returns": "Payload with ``task_id``, ``accepted``, ``project_id``, ``status`` and ``requested_count``. ``accepted`` is False when the request resolved to zero images, in which case ``status`` is already ``completed`` and no events will follow.",
+          "signature": "evoto.face.detect(*, image_ids: list[int] | None = None, project_id: int | None = None, use_current_project: bool = False, auto_load_model: bool = True, timeout: float = 30.0) -> FaceTaskState"
+        },
+        {
+          "brief": "Start a detect task and block until it ends.",
+          "example": "",
+          "kind": "method",
+          "name": "detect_and_wait",
+          "params": [
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Image IDs to detect. Takes priority over the project arguments."
+            ],
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Detect every non-deleted image of this project."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Resolve the project from the host UI."
+            ],
+            [
+              "auto_load_model",
+              "bool",
+              "True",
+              "Load the model on demand when it is not ready."
+            ],
+            [
+              "include_results",
+              "bool",
+              "True",
+              "Fetch the per-image rows for the returned state."
+            ],
+            [
+              "on_image",
+              "Callable[[FaceImageResult], None] | None",
+              "None",
+              "Optional per-image :class:`FaceImageResult` callback, invoked as each image is detected."
+            ],
+            [
+              "on_progress",
+              "Callable[[dict], None] | None",
+              "None",
+              "Optional ``face.detect.progress`` callback."
+            ],
+            [
+              "timeout",
+              "float",
+              "3600.0",
+              "Maximum seconds to wait for the task to finish."
+            ]
+          ],
+          "returns": "The final :class:`FaceTaskState`.",
+          "signature": "evoto.face.detect_and_wait(*, image_ids: list[int] | None = None, project_id: int | None = None, use_current_project: bool = False, auto_load_model: bool = True, include_results: bool = True, on_image: Callable[[FaceImageResult], None] | None = None, on_progress: Callable[[dict], None] | None = None, timeout: float = 3600.0) -> FaceTaskState"
+        },
+        {
+          "brief": "Return the overall state of a detect task.",
+          "example": "",
+          "kind": "method",
+          "name": "detect_status",
+          "params": [
+            [
+              "task_id",
+              "str | None",
+              "None",
+              "Task to query. Omit to query the task the host is running right now, or the most recent one if none is running."
+            ],
+            [
+              "include_results",
+              "bool",
+              "False",
+              "Also return the per-image rows detected so far. Off by default because a large project yields thousands of rows."
+            ],
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "A :class:`FaceTaskState`. ``status`` is one of :class:`evoto.core.api_fields.FaceTaskStateValue`, and ``results`` is present only when ``include_results`` was True.",
+          "signature": "evoto.face.detect_status(task_id: str | None = None, *, include_results: bool = False, timeout: float = 10.0) -> FaceTaskState"
+        },
+        {
+          "brief": "Return True when the model is loaded and can serve :meth:`detect`.",
+          "example": "",
+          "kind": "method",
+          "name": "is_model_ready",
+          "params": [
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "The ``ready`` flag of :meth:`model_status`, so False covers ``unloaded``, ``loading`` and ``failed`` alike.",
+          "signature": "evoto.face.is_model_ready(*, timeout: float = 10.0) -> bool"
+        },
+        {
+          "brief": "Request an asynchronous model load.",
+          "example": "",
+          "kind": "method",
+          "name": "load_model",
+          "params": [
+            [
+              "model_folder",
+              "str | None",
+              "None",
+              "Resource path holding the detection model. Omit to use the host's own resource path, which is what production plugins want - the host knows whether its resources are a directory or a packed bundle."
+            ],
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "RPC timeout in seconds for the acceptance reply only."
+            ]
+          ],
+          "returns": "A :class:`FaceModelState` whose ``status`` reflects the state at reply time - usually ``loading``, or ``ready`` when the same folder was already loaded. ``accepted`` tells whether this specific call started a new load task; ``error_message`` is set only when the host rejected the request outright.",
+          "signature": "evoto.face.load_model(*, model_folder: str | None = None, timeout: float = 30.0) -> FaceModelState"
+        },
+        {
+          "brief": "Return the current model state.",
+          "example": "",
+          "kind": "method",
+          "name": "model_status",
+          "params": [
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "Payload with ``status`` (one of :class:`evoto.core.api_fields.FaceModelStatusValue`), ``ready``, ``model_folder`` and ``error_message``.",
+          "signature": "evoto.face.model_status(*, timeout: float = 10.0) -> FaceModelState"
+        },
+        {
+          "brief": "Subscribe to ``face.detect.canceled``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_detect_canceled",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_detect_canceled(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``face.detect.completed``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_detect_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_detect_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``face.detect.failed``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_detect_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_detect_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``face.detect.progress``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_detect_progress",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_detect_progress(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``face.model.failed``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_model_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_model_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``face.model.loaded``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_model_loaded",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.face.on_model_loaded(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Release the model and free its memory.",
+          "example": "",
+          "kind": "method",
+          "name": "unload_model",
+          "params": [
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "A :class:`FaceModelState` with ``status`` back to ``unloaded``, ``ready`` False and ``accepted`` True when this call performed the release.",
+          "signature": "evoto.face.unload_model(*, timeout: float = 30.0) -> FaceModelState"
+        },
+        {
+          "brief": "Block until the given detect task ends, then return its final state.",
+          "example": "",
+          "kind": "method",
+          "name": "wait_for_detect",
+          "params": [
+            [
+              "task_id",
+              "str",
+              "required",
+              "Task returned by :meth:`detect`."
+            ],
+            [
+              "include_results",
+              "bool",
+              "True",
+              "Fetch the per-image rows for the returned state."
+            ],
+            [
+              "on_image",
+              "Callable[[FaceImageResult], None] | None",
+              "None",
+              "Optional callback invoked with each image's :class:`FaceImageResult` the moment that image is detected, so results can be consumed while the task is still running. Only rows of *this* task are delivered. Runs on the SDK event thread, so keep it cheap."
+            ],
+            [
+              "on_progress",
+              "Callable[[dict], None] | None",
+              "None",
+              "Optional callback invoked with the raw ``face.detect.progress`` payload, which also carries the counters. Use :paramref:`on_image` when you only want results."
+            ],
+            [
+              "timeout",
+              "float",
+              "3600.0",
+              "Maximum seconds to wait. Detection cost scales with image count, so raise this for large projects."
+            ]
+          ],
+          "returns": "The :class:`FaceTaskState` in its terminal form, so ``status`` is ``completed`` or ``canceled`` - a whole-task failure raises instead. A ``canceled`` task still carries everything detected before the stop.",
+          "signature": "evoto.face.wait_for_detect(task_id: str, *, include_results: bool = True, on_image: Callable[[FaceImageResult], None] | None = None, on_progress: Callable[[dict], None] | None = None, timeout: float = 3600.0) -> FaceTaskState"
+        },
+        {
+          "brief": "Load the model if needed and block until it is ready.",
+          "example": "",
+          "kind": "method",
+          "name": "wait_for_model",
+          "params": [
+            [
+              "model_folder",
+              "str | None",
+              "None",
+              "Model resource path. Omit to use the host default."
+            ],
+            [
+              "timeout",
+              "float",
+              "300.0",
+              "Maximum seconds to wait for the load to finish."
+            ]
+          ],
+          "returns": "A :class:`FaceModelState` with ``status`` ``ready`` and ``ready`` True, since any other outcome raises instead of returning.",
+          "signature": "evoto.face.wait_for_model(*, model_folder: str | None = None, timeout: float = 300.0) -> FaceModelState"
+        }
+      ],
+      "subtitle": "Load the face detect model asynchronously, then detect face boxes, age, gender and glasses on library images. Reached as ``evoto.face``.",
+      "title": "FaceAPI - Standalone Face Detection"
+    },
+    "ImageAPI": {
+      "demo_key": "project_image_demo",
+      "import_path": "evoto.image",
+      "methods": [
+        {
+          "brief": "Start deleting images by ID.",
+          "example": "from evoto.core.api_fields import ImageField, DeleteMode\nresult = evoto.image.delete([101, 102], delete_mode=DeleteMode.RECYCLE)\nif result[ImageField.ACCEPTED]:\n    print('delete task accepted')",
+          "kind": "method",
+          "name": "delete",
+          "params": [
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "Image IDs to delete."
+            ],
+            [
+              "delete_mode",
+              "str",
+              "'recycle'",
+              "Delete behavior. Use ``DeleteMode.RECYCLE`` to move images to recycle bin, ``DeleteMode.REMOVE`` to remove them from the project, or ``DeleteMode.TRASH`` to move them to the system trash."
+            ]
+          ],
+          "returns": "Dict containing ``success``, ``accepted``, ``status`` and ``requested_count``.",
+          "signature": "evoto.image.delete(imageIds: list[int], *, delete_mode: str = 'recycle') -> dict"
+        },
+        {
+          "brief": "Import files or folders into a project synchronously.",
+          "example": "result = evoto.image.import_files(\n    [\"/photos/batch_01\"],\n    use_current_project=True,\n)\nprint(result)",
+          "kind": "method",
+          "name": "import_files",
+          "params": [
+            [
+              "paths",
+              "list",
+              "required",
+              "File or directory paths to import. Must contain at least one path."
+            ],
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Target project ID. Ignored when ``use_current_project`` is true or ``project_name`` is used."
+            ],
+            [
+              "project_name",
+              "str | None",
+              "None",
+              "Create or find a project by name when ``project_id`` is not supplied."
+            ],
+            [
+              "project_group_id",
+              "int | None",
+              "None",
+              "Parent group ID used when creating a project from ``project_name``."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the currently selected project in the host. Falls back to explicit project arguments when no current project is available."
+            ],
+            [
+              "allow_cross_cloud_sync",
+              "bool",
+              "False",
+              "When creating a project by name, enable cross-cloud sync for the new project."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "import_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID used to correlate import responses and lifecycle events."
+            ],
+            [
+              "timeout_ms",
+              "int",
+              "300000",
+              "Maximum wait time in milliseconds. Defaults to ``300000``."
+            ]
+          ],
+          "returns": "Host result payload containing ``success``, ``project_id``, ``added_count``, ``repeat_count`` and ``images``.",
+          "signature": "evoto.image.import_files(paths: list, *, project_id: int | None = None, project_name: str | None = None, project_group_id: int | None = None, use_current_project: bool = False, allow_cross_cloud_sync: bool = False, data_mode: bool = False, import_listener_uuid: str | None = None, timeout_ms: int = 300000) -> dict"
+        },
+        {
+          "brief": "Start an asynchronous image import.",
+          "example": "ack = evoto.image.import_files_async(\n    [\"/photos/batch_01\"],\n    project_name=\"Auto Import\",\n    allow_cross_cloud_sync=True,\n)\nprint('Import ID:', ack['import_id'])",
+          "kind": "method",
+          "name": "import_files_async",
+          "params": [
+            [
+              "paths",
+              "list",
+              "required",
+              "File or directory paths to import. Must contain at least one path."
+            ],
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Target project ID. Ignored when ``use_current_project`` is true or ``project_name`` is used."
+            ],
+            [
+              "project_name",
+              "str | None",
+              "None",
+              "Create or find a project by name when ``project_id`` is not supplied."
+            ],
+            [
+              "project_group_id",
+              "int | None",
+              "None",
+              "Parent group ID used when creating a project from ``project_name``."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the currently selected project in the host."
+            ],
+            [
+              "allow_cross_cloud_sync",
+              "bool",
+              "False",
+              "When creating a project by name, enable cross-cloud sync for the new project."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "import_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID used to correlate import responses and lifecycle events."
+            ]
+          ],
+          "returns": "Immediate acceptance payload with ``status``, ``import_id`` and ``project_id``. Completion is delivered through import events.",
+          "signature": "evoto.image.import_files_async(paths: list, *, project_id: int | None = None, project_name: str | None = None, project_group_id: int | None = None, use_current_project: bool = False, allow_cross_cloud_sync: bool = False, data_mode: bool = False, import_listener_uuid: str | None = None) -> dict"
+        },
+        {
+          "brief": "Return basic information for a single image by its ID.",
+          "example": "from evoto.core.api_fields import ImageMetadataGroup\ninfo = evoto.image.info(101)\nexposure = info.metadata.get(ImageMetadataGroup.EXIF_EXPOSURE, {})\niso = exposure.get('isoSpeedRatings')\nshutter = exposure.get('shutterSpeedValue')",
+          "kind": "method",
+          "name": "info",
+          "params": [
+            [
+              "image_id",
+              "int",
+              "required",
+              "Image ID to query."
+            ],
+            [
+              "include_metadata",
+              "bool",
+              "True",
+              "Include metadata groups when true."
+            ]
+          ],
+          "returns": ":class:`ImageInfo` for the requested image.",
+          "signature": "evoto.image.info(image_id: int, *, include_metadata: bool = True) -> ImageInfo"
+        },
+        {
+          "brief": "List images inside a project.",
+          "example": "images = evoto.image.list(use_current_project=True)\nfor img in images:\n    print(img['id'], img['filename'])",
+          "kind": "method",
+          "name": "list",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to list. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Prefer the currently selected project in the host."
+            ]
+          ],
+          "returns": "List of image dicts containing at least ``id``, ``filename`` and ``origin_path``.",
+          "signature": "evoto.image.list(project_id: int | None = None, *, data_mode: bool = False, use_current_project: bool = False) -> list"
+        },
+        {
+          "brief": "Unregister ``import.completed`` event callbacks.",
+          "example": "evoto.image.off_completed()",
+          "kind": "method",
+          "name": "off_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all completed-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.off_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``import.failed`` event callbacks.",
+          "example": "evoto.image.off_failed()",
+          "kind": "method",
+          "name": "off_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all failed-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.off_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``import.progress`` event callbacks.",
+          "example": "evoto.image.off_progress()",
+          "kind": "method",
+          "name": "off_progress",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all progress-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.off_progress(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``import.started`` event callbacks.",
+          "example": "evoto.image.off_started()",
+          "kind": "method",
+          "name": "off_started",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all started-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.off_started(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Subscribe to ``import.completed`` events.",
+          "example": "def on_completed(data):\n    print('Import completed:', data)\n\nevoto.image.on_completed(on_completed)",
+          "kind": "method",
+          "name": "on_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the completed import payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.on_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``import.failed`` events.",
+          "example": "def on_failed(data):\n    print('Import failed:', data.get('message'))\n\nevoto.image.on_failed(on_failed)",
+          "kind": "method",
+          "name": "on_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failed import payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.on_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``import.progress`` events.",
+          "example": "def on_progress(data):\n    print('Import progress:', data.get('progress', 0))\n\nevoto.image.on_progress(on_progress)",
+          "kind": "method",
+          "name": "on_progress",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with progress payloads containing completed and total counts when available."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.on_progress(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to ``import.started`` events.",
+          "example": "def on_started(data):\n    print('Import started:', data)\n\nevoto.image.on_started(on_started)",
+          "kind": "method",
+          "name": "on_started",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the import-start payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.image.on_started(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Subscribe to import lifecycle events on the host.",
+          "example": "evoto.image.subscribe(import_listener_uuid='listener-001')",
+          "kind": "method",
+          "name": "subscribe",
+          "params": [
+            [
+              "import_listener_uuid",
+              "str | None",
+              "None",
+              "Optional UUID filter. When provided, only imports started with the same UUID emit events to this subscriber."
+            ]
+          ],
+          "returns": "``{\"subscribed\": True}`` on success.",
+          "signature": "evoto.image.subscribe(import_listener_uuid: str | None = None) -> dict"
+        },
+        {
+          "brief": "Unsubscribe from import lifecycle events.",
+          "example": "evoto.image.unsubscribe()",
+          "kind": "method",
+          "name": "unsubscribe",
+          "params": [],
+          "returns": "``{\"unsubscribed\": True}`` on success.",
+          "signature": "evoto.image.unsubscribe() -> dict"
+        },
+        {
+          "brief": "Single image details returned by ``image.info``. Fields: id, filename, origin_path, project_id, format, width, height, file_size, metadata",
+          "example": "",
+          "kind": "dataclass",
+          "name": "ImageInfo",
+          "params": [
+            [
+              "id",
+              "int",
+              "required",
+              "Image ID."
+            ],
+            [
+              "filename",
+              "str",
+              "required",
+              "File name displayed by the host."
+            ],
+            [
+              "origin_path",
+              "str",
+              "required",
+              "Absolute path to the original image file."
+            ],
+            [
+              "project_id",
+              "int",
+              "required",
+              "ID of the project that owns the image."
+            ],
+            [
+              "format",
+              "str",
+              "required",
+              "Image format label, such as ``JPG``, ``PNG``, ``RAW``, ``TIFF``, ``HEIC``, ``BMP`` or ``TSQ``."
+            ],
+            [
+              "width",
+              "int",
+              "required",
+              "Original image width in pixels."
+            ],
+            [
+              "height",
+              "int",
+              "required",
+              "Original image height in pixels."
+            ],
+            [
+              "file_size",
+              "int",
+              "required",
+              "Original file size in bytes."
+            ],
+            [
+              "metadata",
+              "dict",
+              "<factory>",
+              "Optional metadata grouped by category. Empty when metadata is not requested or unavailable."
+            ]
+          ],
+          "returns": "",
+          "signature": "@dataclass\nclass ImageInfo"
+        }
+      ],
+      "subtitle": "Import files, list images, react to import lifecycle events. Reached as ``evoto.image``. The ``ImageInfo`` dataclass at the bottom is what ``image.info()`` returns.",
+      "title": "ImageAPI - Image Import & Management"
+    },
+    "LibraryAPI": {
+      "demo_key": "library_demo",
+      "import_path": "evoto.library",
+      "methods": [
+        {
+          "brief": "Add image IDs as normal selected images.",
+          "example": "result = evoto.library.add_selection([101, 202])\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "add_selection",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.add_selection(image_ids: list[int]) -> dict"
+        },
+        {
+          "brief": "Clear non-primary images from the current host library selection.",
+          "example": "result = evoto.library.clear_selection([202])\n# Omit image_ids to clear all non-primary selected images.\nresult = evoto.library.clear_selection()\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "clear_selection",
+          "params": [
+            [
+              "image_ids",
+              "list[int] | None",
+              "None",
+              "Optional image IDs to clear. Omit to clear every non-primary selected image. The primary image cannot be cleared by this method."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.clear_selection(image_ids: list[int] | None = None) -> dict"
+        },
+        {
+          "brief": "Return the currently active host space.",
+          "example": "space = evoto.library.current_space()\nprint(space.get('space_id'), space.get('name'), space.get('type'))",
+          "kind": "method",
+          "name": "current_space",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.library.current_space() -> dict[str, Any]"
+        },
+        {
+          "brief": "Return the current host library selection.",
+          "example": "selection = evoto.library.get_selection()\nprint(selection.get('project_id'), selection.get('selected_count'), selection.get('primary_image_id'))\nprint(selection.get('images', []))",
+          "kind": "method",
+          "name": "get_selection",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.library.get_selection() -> dict"
+        },
+        {
+          "brief": "List library images without changing host UI filters.",
+          "example": "from evoto.core.api_fields import LibraryField, MetadataFlag\n\nimages = evoto.library.list_images(\n    project_id=123,\n    filters={\n        LibraryField.RATING: [2, 3],\n        LibraryField.FLAG: [MetadataFlag.PICK, MetadataFlag.REJECT],\n        LibraryField.EXPORT_STATUS: [\"unexported\", \"failed\"],\n        LibraryField.FORMAT: [\"RAW\", \"JPG\"],\n        LibraryField.ORIENTATION: [\"landscape\", \"portrait\"],\n        LibraryField.FILE_NAME: [\"IMG\", \"DSC\"],\n    },\n    sort=LibraryField.CAPTURE_TIME,\n    sort_desc=True,\n)\nfor img in images[:10]:\n    print(img['id'], img.get('filename'))",
+          "kind": "method",
+          "name": "list_images",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to query. Omit it only when deliberately testing host-side missing-parameter handling."
+            ],
+            [
+              "filters",
+              "LibraryImageFilters | None",
+              "None",
+              "Optional data filters. Supported keys: ``LibraryField.RATING`` (list of 0-5 star values), ``LibraryField.COLOR_LABEL`` (list of ``MetadataColorLabel`` members), ``LibraryField.FLAG`` (list of ``MetadataFlag`` members; the legacy strings ``\"flagged\"``, ``\"rejected\"``, ``\"unflagged\"`` are still accepted), ``LibraryField.EDIT_STATUS`` (``\"edited\"``, ``\"unedited\"``), ``LibraryField.EXPORT_STATUS`` (``\"exported\"``, ``\"unexported\"``, ``\"failed\"``), ``LibraryField.FORMAT`` (``\"RAW\"``, ``\"JPG\"``, ``\"PNG\"``, ``\"TIFF\"``, etc.), ``LibraryField.ORIENTATION`` (``\"landscape\"``, ``\"portrait\"``, ``\"square\"``), and ``LibraryField.FILE_NAME`` (list of filename keywords). Example: ``{LibraryField.RATING: [2, 3], LibraryField.FLAG: [MetadataFlag.PICK]}``."
+            ],
+            [
+              "sort",
+              "LibrarySortKey | None",
+              "None",
+              "Optional sort keys. Supported values: ``LibraryField.CAPTURE_TIME``, ``LibraryField.FILENAME``, ``LibraryField.RATING`` and ``LibraryField.COLOR_LABEL``. Their string values are ``\"capture_time\"``, ``\"filename\"``, ``\"rating\"`` and ``\"color_label\"``. Example: ``LibraryField.CAPTURE_TIME``."
+            ],
+            [
+              "sort_desc",
+              "bool",
+              "False",
+              "Sort descending when ``sort`` is provided. Defaults to ascending order."
+            ],
+            [
+              "page",
+              "int | None",
+              "None",
+              "Optional one-based page number."
+            ],
+            [
+              "page_size",
+              "int | None",
+              "None",
+              "Optional number of images per page."
+            ]
+          ],
+          "returns": "List of image payload dicts.",
+          "signature": "evoto.library.list_images(project_id: int | None = None, *, filters: LibraryImageFilters | None = None, sort: LibrarySortKey | None = None, sort_desc: bool = False, page: int | None = None, page_size: int | None = None) -> list[dict[str, Any]]"
+        },
+        {
+          "brief": "List personal and team spaces.",
+          "example": "spaces = evoto.library.list_spaces()\nfor space in spaces:\n    print(space['space_id'], space['name'], space['type'])",
+          "kind": "method",
+          "name": "list_spaces",
+          "params": [
+            [
+              "space_type",
+              "LibrarySpaceType",
+              "'all'",
+              "``\"all\"``, ``\"personal\"``, or ``\"team\"``."
+            ]
+          ],
+          "returns": "List of space payloads. Each item includes ``space_id``, ``name`` and ``type``.",
+          "signature": "evoto.library.list_spaces(space_type: LibrarySpaceType = 'all') -> list[dict[str, Any]]"
+        },
+        {
+          "brief": "Unregister ``library.switchSpace.completed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_switch_space_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.off_switch_space_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``library.switchSpace.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_switch_space_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.off_switch_space_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Fired after ``library.switchSpace`` finishes refreshing the Library UI.",
+          "example": "",
+          "kind": "method",
+          "name": "on_switch_space_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.on_switch_space_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when ``library.switchSpace`` fails after being accepted.",
+          "example": "",
+          "kind": "method",
+          "name": "on_switch_space_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.on_switch_space_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Replace the current host library selection.",
+          "example": "result = evoto.library.set_selection(\n    [101, 202],\n    primary_image_id=101,\n)\nprint(result.get('status'), result.get('reason'))",
+          "kind": "method",
+          "name": "set_selection",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              ""
+            ],
+            [
+              "primary_image_id",
+              "int | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.library.set_selection(image_ids: list[int], *, primary_image_id: int | None = None) -> dict"
+        },
+        {
+          "brief": "Switch the active host space.",
+          "example": "result = evoto.library.switch_space(123)\nprint(result.get('success'), result.get('space', {}).get('name'))",
+          "kind": "method",
+          "name": "switch_space",
+          "params": [
+            [
+              "space_id",
+              "int",
+              "required",
+              "Target personal or team space ID."
+            ]
+          ],
+          "returns": "Host response with ``success``, ``status`` and the target ``space`` payload.",
+          "signature": "evoto.library.switch_space(space_id: int) -> dict"
+        },
+        {
+          "brief": "Update rating, color label or flag for images.",
+          "example": "from evoto.core.api_fields import MetadataColorLabel\n\nevoto.library.update_labels(\n    [101, 202],\n    rating=5,\n    color_label=MetadataColorLabel.GREEN,\n)",
+          "kind": "method",
+          "name": "update_labels",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to update."
+            ],
+            [
+              "rating",
+              "int | None",
+              "None",
+              "Optional star rating, ``0`` to ``5``."
+            ],
+            [
+              "color_label",
+              "MetadataColorLabel | None",
+              "None",
+              "Optional color label. Use a :class:`~evoto.core.api_fields.MetadataColorLabel` member; only its values are accepted."
+            ],
+            [
+              "flag",
+              "MetadataFlag | None",
+              "None",
+              "Optional flag. Use a :class:`~evoto.core.api_fields.MetadataFlag` member; only its values are accepted."
+            ]
+          ],
+          "returns": "Host batch result payload with per-image item statuses.",
+          "signature": "evoto.library.update_labels(image_ids: list[int], *, rating: int | None = None, color_label: MetadataColorLabel | None = None, flag: MetadataFlag | None = None) -> dict"
+        }
+      ],
+      "subtitle": "Query library images without changing host UI filters and update lightweight labels. Reached as ``evoto.library``.",
+      "title": "LibraryAPI - Data Library Automation"
+    },
+    "MetadataAPI": {
+      "demo_key": "metadata_demo",
+      "import_path": "evoto.metadata",
+      "methods": [
+        {
+          "brief": "Read metadata for image IDs.",
+          "example": "items = evoto.metadata.read([101, 202])\nfor item in items:\n    print(item[\"image_id\"], item[\"filename\"], item[\"absolute_path\"])\n    print(item[\"metadata\"].keys())",
+          "kind": "method",
+          "name": "read",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to read."
+            ],
+            [
+              "source",
+              "str",
+              "'evoto'",
+              "Metadata source. The first host implementation supports ``\"evoto\"`` for data-backed metadata."
+            ]
+          ],
+          "returns": "List of image metadata objects. Each item contains ``image_id``, ``filename``, ``absolute_path`` and ``metadata``.",
+          "signature": "evoto.metadata.read(image_ids: list[int], *, source: str = 'evoto') -> list"
+        },
+        {
+          "brief": "Read file metadata into the host data store for image IDs.",
+          "example": "result = evoto.metadata.read_from_file([101, 202])\nprint(result.get('success_count'), result.get('failed_count'))",
+          "kind": "method",
+          "name": "read_from_file",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to refresh."
+            ]
+          ],
+          "returns": "Host batch result payload with per-image item statuses.",
+          "signature": "evoto.metadata.read_from_file(image_ids: list[int]) -> dict"
+        },
+        {
+          "brief": "Save host metadata to the image file or sidecar for image IDs.",
+          "example": "from evoto.core.api_fields import MetadataField\n\nresult = evoto.metadata.save_to_file(\n    [101, 202],\n    sidecar=True,\n    fields={MetadataField.TITLE: \"Title for sidecar only\"},\n)\nprint(result.get('success_count'), result.get('failed_count'))",
+          "kind": "method",
+          "name": "save_to_file",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to save."
+            ],
+            [
+              "sidecar",
+              "bool",
+              "True",
+              "Save to a sidecar file when supported by the host."
+            ],
+            [
+              "fields",
+              "MetadataEditableFields | None",
+              "None",
+              "Optional editable metadata fields to merge with host metadata before saving to the file. Same shape as :meth:`write`. The host does not write these values back to its data store."
+            ]
+          ],
+          "returns": "Host batch result payload with per-image item statuses.",
+          "signature": "evoto.metadata.save_to_file(image_ids: list[int], *, sidecar: bool = True, fields: MetadataEditableFields | None = None) -> dict"
+        },
+        {
+          "brief": "Write editable metadata fields for image IDs.",
+          "example": "from evoto.core.api_fields import MetadataField\n\nresult = evoto.metadata.write(\n    [101, 202],\n    {\n        MetadataField.TITLE: \"Client selects\",\n        MetadataField.RATING: 5,\n    },\n)\nprint(result.get('success_count'), result.get('failed_count'))",
+          "kind": "method",
+          "name": "write",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image IDs to update."
+            ],
+            [
+              "fields",
+              "MetadataEditableFields",
+              "required",
+              "Editable metadata fields. Supported keys: ``MetadataField.TITLE``, ``MetadataField.CAPTION``, ``MetadataField.CREATOR``, ``MetadataField.COPYRIGHT``, ``MetadataField.SUPPLEMENTAL_CATEGORIES``, ``MetadataField.RATING``, ``MetadataField.COLOR_LABEL`` and ``MetadataField.FLAG``. ``rating`` is ``0`` to ``5``. Use ``MetadataColorLabel`` and ``MetadataFlag`` members for color-label and flag values; only their values are accepted. ``supplemental_categories`` maps to IPTC Supplemental Categories (XMP ``photoshop:SupplementalCategories``), not keywords (``dc:subject``), and accepts a CSV string or list of strings."
+            ]
+          ],
+          "returns": "Host batch result payload with per-image item statuses.",
+          "signature": "evoto.metadata.write(image_ids: list[int], fields: MetadataEditableFields) -> dict"
+        }
+      ],
+      "subtitle": "Read and update image metadata, refresh metadata from files, and save host metadata back to files or sidecars. Reached as ``evoto.metadata``.",
+      "title": "MetadataAPI - Metadata Automation"
+    },
+    "PresetAPI": {
+      "demo_key": "preset_demo",
+      "import_path": "evoto.preset",
+      "methods": [
+        {
+          "brief": "Apply preset to specific images by image ID.",
+          "example": "matches = evoto.preset.find_by_name(\"Soft Light\")\nsuit_id = next(\n    item[\"id\"] for item in matches\n    if item[\"className\"] == \"Portrait\"\n)\n\n# Prepare this ID with ensure_ready_async() and wait for success\n# before using the synchronous apply method.\nevoto.preset.apply_to_image(\n    suit_id,\n    imageIds=[101, 202],\n)",
+          "kind": "method",
+          "name": "apply_to_image",
+          "params": [
+            [
+              "suit_id",
+              "str",
+              "required",
+              "The preset suit ExtendId."
+            ],
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "List of image IDs."
+            ],
+            [
+              "render",
+              "bool",
+              "True",
+              "If True (default), trigger the rendering pipeline so the effect is visible immediately. If False, the effect is applied without immediately triggering render."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"appliedCount\": N}`` Important: Preset updates can change the suit ID. Resolve the current ``suit_id`` with :meth:`find_by_name` before applying instead of relying on a long-lived stored ID. This synchronous method does not prepare missing preset details. Call :meth:`ensure_ready_async` first and wait for a successful callback before applying. Dispatch this blocking call back to the application or worker thread; do not invoke it directly on the SDK callback thread.",
+          "signature": "evoto.preset.apply_to_image(suit_id: str, imageIds: list[int], render: bool = True) -> dict"
+        },
+        {
+          "brief": "Prepare and apply a preset without blocking the caller.",
+          "example": "matches = evoto.preset.find_by_name(\"Soft Light\")\nsuit_id = next(\n    item[\"id\"] for item in matches\n    if item[\"className\"] == \"Portrait\"\n)\n\ndef on_applied(result, status):\n    if not status.is_success:\n        print(status.error_code, status.error_message)\n        return\n    print(result[\"appliedCount\"], result[\"downloaded\"])\n\nrequest_id = evoto.preset.apply_to_image_async(\n    suit_id,\n    imageIds=[101, 202],\n    callback=on_applied,\n)",
+          "kind": "method",
+          "name": "apply_to_image_async",
+          "params": [
+            [
+              "suit_id",
+              "str",
+              "required",
+              "Current preset suit ExtendId to prepare and apply. Preset updates can change this ID; obtain the current value from :meth:`find_by_name`."
+            ],
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "Image IDs that should receive the preset."
+            ],
+            [
+              "callback",
+              "Callable[[Any, ReplyStatus], None]",
+              "required",
+              "Called as ``callback(result, status)`` after the entire preparation and application workflow finishes. Do not assume that callbacks run on a fixed thread; see Callback delivery below."
+            ],
+            [
+              "timeout",
+              "float",
+              "120.0",
+              "Maximum seconds to wait for the final reply."
+            ]
+          ],
+          "returns": "A string request ID returned immediately after the request is queued. The same value is available as ``status.request_id`` when the callback runs and can be passed to ``evoto.host.cancel_request``. Result payload: The callback receives ``result`` as a dict on success: * ``success`` (bool): Always ``True`` for a successful reply. * ``appliedCount`` (int): Number of images actually updated. This is ``0`` when none of the supplied image IDs resolve to an applicable image. * ``downloaded`` (bool): Whether this request downloaded missing preset details before applying the preset. ``False`` means the preset was already ready locally; it does not indicate failure. For a successful reply, ``status.is_success`` is ``True``, ``status.is_timeout`` is ``False``, ``status.error_code`` is ``0``, and ``status.error_message`` is empty. Error handling: For a host error, ``result`` is ``None``, ``status.is_success`` and ``status.is_timeout`` are ``False``, and ``status.error_code`` / ``status.error_message`` describe the error. An unknown or stale ``suit_id`` is reported with error code ``404``. For a timeout, ``result`` is ``None``, ``status.is_success`` is ``False``, and ``status.is_timeout`` is ``True``. ``status.elapsed_ms`` reports the time until completion or timeout in both cases. Callback delivery: Successful host replies and host errors usually invoke the callback on the SDK receiver thread. Timeouts invoke it on the SDK timer thread. A local send failure invokes it immediately on the thread calling this method, potentially before this method returns. Marshal to the appropriate application thread before touching thread-affine state such as GUI objects. Important: Preset updates can change the suit ID. Resolve the current ``suit_id`` with :meth:`find_by_name` close to the time of application instead of relying on a long-lived stored ID. This method automatically downloads missing preset details before applying. Cancellation: If ``evoto.host.cancel_request(request_id)`` returns ``True``, the callback runs locally with ``result`` set to ``None``, ``status.is_success`` and ``status.is_timeout`` set to ``False``, and cancellation described by ``status.error_message``. The callback runs synchronously on the thread calling ``cancel_request``. A later host reply is ignored. Cancellation does not stop host-side download or application.",
+          "signature": "evoto.preset.apply_to_image_async(suit_id: str, imageIds: list[int], callback: Callable[[Any, ReplyStatus], None], timeout: float = 120.0) -> str"
+        },
+        {
+          "brief": "Ensure preset suits are downloaded and ready before later use.",
+          "example": "matches = evoto.preset.find_by_name(\"Soft Light\")\nsuit_id = next(\n    item[\"id\"] for item in matches\n    if item[\"className\"] == \"Portrait\"\n)\n\ndef on_ready(result, status):\n    if not status.is_success:\n        print(status.error_code, status.error_message)\n        return\n    print(result[\"readySuitIds\"], result[\"downloaded\"])\n\nrequest_id = evoto.preset.ensure_ready_async(\n    [suit_id],\n    callback=on_ready,\n)",
+          "kind": "method",
+          "name": "ensure_ready_async",
+          "params": [
+            [
+              "suit_ids",
+              "list[str]",
+              "required",
+              "Current preset suit IDs to resolve on the host. Preset updates can change these IDs; obtain current values from :meth:`find_by_name` instead of relying on long-lived stored values. Pass suit IDs only, not beautify or palette preset IDs."
+            ],
+            [
+              "callback",
+              "Callable[[Any, ReplyStatus], None]",
+              "required",
+              "Called as ``callback(result, status)`` when the request finishes. Do not assume that callbacks run on a fixed thread; see Callback delivery below."
+            ],
+            [
+              "timeout",
+              "float",
+              "120.0",
+              "Maximum seconds to wait before the request times out."
+            ]
+          ],
+          "returns": "A string request ID returned immediately after the request is queued. The same value is available as ``status.request_id`` when the callback runs and can be passed to ``evoto.host.cancel_request``. Result payload: The callback receives ``result`` as a dict on success: * ``success`` (bool): Always ``True`` for a successful reply. * ``readySuitIds`` (list[str]): Every requested suit ID confirmed ready after local validation and any required download. * ``downloaded`` (bool): Whether this request downloaded missing preset details. ``False`` means every requested suit was already ready locally; it does not indicate failure. For a successful reply, ``status.is_success`` is ``True``, ``status.is_timeout`` is ``False``, ``status.error_code`` is ``0``, and ``status.error_message`` is empty. Error handling: For a host error, ``result`` is ``None``, ``status.is_success`` and ``status.is_timeout`` are ``False``, and ``status.error_code`` / ``status.error_message`` describe the error. An unknown or stale suit ID is reported with error code ``404``. For a timeout, ``result`` is ``None``, ``status.is_success`` is ``False``, and ``status.is_timeout`` is ``True``. ``status.elapsed_ms`` reports the time until completion or timeout in both cases. Callback delivery: Successful host replies and host errors usually invoke the callback on the SDK receiver thread. Timeouts invoke it on the SDK timer thread. A local send failure invokes it immediately on the thread calling this method, potentially before this method returns. Marshal to the appropriate application thread before touching thread-affine state such as GUI objects. Cancellation: If ``evoto.host.cancel_request(request_id)`` returns ``True``, the callback runs locally with ``result`` set to ``None``, ``status.is_success`` and ``status.is_timeout`` set to ``False``, and cancellation described by ``status.error_message``. The callback runs synchronously on the thread calling ``cancel_request``. A later host reply is ignored. Cancellation does not stop an in-progress host download or host-side preset preparation.",
+          "signature": "evoto.preset.ensure_ready_async(suit_ids: list[str], callback: Callable[[Any, ReplyStatus], None], timeout: float = 120.0) -> str"
+        },
+        {
+          "brief": "Look up presets by their display name.",
+          "example": "matches = evoto.preset.find_by_name(\"Soft Light\")\nfor m in matches:\n    print(m['className'], m['classType'], m['id'])\n\n# Names repeat across classes, so select the intended current ID.\nsuit_id = next(\n    item[\"id\"] for item in matches\n    if item[\"className\"] == \"Portrait\"\n)",
+          "kind": "method",
+          "name": "find_by_name",
+          "params": [
+            [
+              "name",
+              "str",
+              "required",
+              "Exact preset name, case-sensitive, as shown in the host UI."
+            ]
+          ],
+          "returns": "A list of match dicts, one per preset carrying that name, each holding ``id`` (str, the suit ExtendId, pass it to :meth:`apply_to_image` as ``suit_id``), ``name`` (str, the matched preset name), ``classId`` (str, ID of the owning class), ``className`` (str, display name of the owning class) and ``classType`` (str, one of ``\"system\"`` / ``\"user\"`` / ``\"team\"`` / ``\"unknown\"``). The list holds at least one entry; a single match means the name is unambiguous.",
+          "signature": "evoto.preset.find_by_name(name: str) -> list"
+        },
+        {
+          "brief": "List presets.",
+          "example": "categories = evoto.preset.list()\nfor cat in categories:\n    print(cat['name'], len(cat['presets']), 'presets')",
+          "kind": "method",
+          "name": "list",
+          "params": [
+            [
+              "class_id",
+              "str",
+              "''",
+              "Optional category filter. If given, returns only the presets of that class. If empty, returns every class with its presets nested."
+            ]
+          ],
+          "returns": "When ``class_id`` is empty, a list of class dicts, each holding ``id`` (str, class ID), ``name`` (str, display name), ``isTeam`` (bool), ``type`` (str, one of ``\"system\"`` / ``\"user\"`` / ``\"team\"`` / ``\"unknown\"``) and ``presets`` (list of preset dicts). When ``class_id`` is given, a flat list of preset dicts, each holding ``id`` (str, the suit ExtendId), ``name`` (str, display name), ``classId`` (str, owning class ID) and ``type`` (str). Either list is empty when the host returns no data.",
+          "signature": "evoto.preset.list(class_id: str = '') -> list"
+        },
+        {
+          "brief": "Reset preset effect for specified images.",
+          "example": "evoto.preset.reset(imageIds=[101, 202])",
+          "kind": "method",
+          "name": "reset",
+          "params": [
+            [
+              "imageIds",
+              "list[int]",
+              "required",
+              "List of image IDs to reset."
+            ],
+            [
+              "render",
+              "bool",
+              "True",
+              "Trigger rendering pipeline (default True)."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"appliedCount\": N}``",
+          "signature": "evoto.preset.reset(imageIds: list[int], render: bool = True) -> dict"
+        }
+      ],
+      "subtitle": "Apply / reset preset suits on selected images. Reached as ``evoto.preset``.",
+      "title": "PresetAPI - Preset Management"
+    },
+    "ProjectAPI": {
+      "demo_key": "project_image_demo",
+      "import_path": "evoto.project",
+      "methods": [
+        {
+          "brief": "Return current cloud upload/download status for a project.",
+          "example": "status = evoto.project.cloud_status(12345)\nprint(status.get('status'), status.get('upload_progress'), status.get('download_progress'))",
+          "kind": "method",
+          "name": "cloud_status",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Project ID to inspect."
+            ]
+          ],
+          "returns": "Current active transfer status payload.",
+          "signature": "evoto.project.cloud_status(project_id: int) -> dict"
+        },
+        {
+          "brief": "Convert a local project into a cloud-synced project.",
+          "example": "evoto.project.on_convert_to_cloud_completed(lambda d: print('converted:', d))\nevoto.project.on_convert_to_cloud_failed(lambda d: print('failed:', d.get('message')))\nevoto.project.on_cloud_upload_completed(lambda d: print('all uploaded:', d.get('project_id')))\nevoto.project.on_cloud_upload_failed(lambda d: print('upload failed:', d.get('message')))\nevoto.project.on_cloud_download_failed(lambda d: print('download failed:', d.get('message')))\n\nresult = evoto.project.convert_to_cloud(12345)\nprint('accepted:', result.get('accepted'))",
+          "kind": "method",
+          "name": "convert_to_cloud",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Local project ID to convert."
+            ],
+            [
+              "team_id",
+              "int | None",
+              "None",
+              "Target team or cloud space ID. Omit to use the host's current cloud space."
+            ],
+            [
+              "storage_path",
+              "str | None",
+              "None",
+              "Optional storage path for compatible cloud storage providers."
+            ]
+          ],
+          "returns": "Host response with ``accepted``, ``status`` and ``project_id``.",
+          "signature": "evoto.project.convert_to_cloud(project_id: int, *, team_id: int | None = None, storage_path: str | None = None) -> dict"
+        },
+        {
+          "brief": "Create a project.",
+          "example": "import evoto\n\nevoto.connect()\n\nresult = evoto.project.create(\n    \"My Portrait Project\",\n    use_current_group=True,\n    allow_cross_cloud_sync=True,\n)\nprint(result)",
+          "kind": "method",
+          "name": "create",
+          "params": [
+            [
+              "name",
+              "str",
+              "required",
+              "Display name."
+            ],
+            [
+              "group_id",
+              "int | None",
+              "0",
+              "Parent folder id."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_group",
+              "bool",
+              "False",
+              "When true, ask the host to use the currently selected group."
+            ],
+            [
+              "allow_cross_cloud_sync",
+              "bool",
+              "False",
+              "When true, create the project with cross-cloud sync enabled."
+            ]
+          ],
+          "returns": "Created project payload from host.",
+          "signature": "evoto.project.create(name: str, group_id: int | None = 0, *, data_mode: bool = False, use_current_group: bool = False, allow_cross_cloud_sync: bool = False) -> dict"
+        },
+        {
+          "brief": "Get the currently active project in the host image library.",
+          "example": "try:\n    proj = evoto.project.current()\n    print('Active project:', proj['name'])\nexcept ApiError as e:\n    if e.code == 404:\n        print('No project is open')",
+          "kind": "method",
+          "name": "current",
+          "params": [],
+          "returns": "Project detail dict (same shape as :meth:`info`).",
+          "signature": "evoto.project.current() -> dict"
+        },
+        {
+          "brief": "Move a project to the recycle bin.",
+          "example": "evoto.project.delete(use_current_project=True)",
+          "kind": "method",
+          "name": "delete",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project ID to delete. Ignored when ``use_current_project`` is true."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "Delete the currently selected project in the host."
+            ]
+          ],
+          "returns": "``{\"success\": True}`` when the request is accepted.",
+          "signature": "evoto.project.delete(project_id: int | None = None, *, data_mode: bool = False, use_current_project: bool = False) -> dict"
+        },
+        {
+          "brief": "Create a project group.",
+          "example": "group = evoto.project.group_create(\"Retouching Queue\")",
+          "kind": "method",
+          "name": "group_create",
+          "params": [
+            [
+              "name",
+              "str",
+              "required",
+              "Display name for the new project group."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ]
+          ],
+          "returns": "Created project group payload from host.",
+          "signature": "evoto.project.group_create(name: str, *, data_mode: bool = False) -> dict"
+        },
+        {
+          "brief": "Delete a project group by ID or current selection.",
+          "example": "evoto.project.group_delete(use_current_group=True)",
+          "kind": "method",
+          "name": "group_delete",
+          "params": [
+            [
+              "group_id",
+              "int | None",
+              "None",
+              "Project group ID to delete. Ignored when ``use_current_group`` is true."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_group",
+              "bool",
+              "False",
+              "Delete the currently selected project group in the host."
+            ]
+          ],
+          "returns": "``{\"success\": True}`` when the request is accepted.",
+          "signature": "evoto.project.group_delete(group_id: int | None = None, *, data_mode: bool = False, use_current_group: bool = False) -> dict"
+        },
+        {
+          "brief": "Get a single project group by ID or current selection.",
+          "example": "group = evoto.project.group_get(use_current_group=True)",
+          "kind": "method",
+          "name": "group_get",
+          "params": [
+            [
+              "group_id",
+              "int | None",
+              "None",
+              "Project group ID to query. Ignored when ``use_current_group`` is true."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_group",
+              "bool",
+              "False",
+              "Prefer the currently selected project group in the host."
+            ]
+          ],
+          "returns": "Project group detail dict.",
+          "signature": "evoto.project.group_get(group_id: int | None = None, *, data_mode: bool = False, use_current_group: bool = False) -> dict"
+        },
+        {
+          "brief": "List all project groups.",
+          "example": "groups = evoto.project.group_list()\nfor group in groups:\n    print(group['id'], group['name'])",
+          "kind": "method",
+          "name": "group_list",
+          "params": [
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ]
+          ],
+          "returns": "List of project group dicts.",
+          "signature": "evoto.project.group_list(*, data_mode: bool = False) -> list"
+        },
+        {
+          "brief": "Rename a project group by ID or current selection.",
+          "example": "evoto.project.group_rename(None, \"Client Delivery\", use_current_group=True)",
+          "kind": "method",
+          "name": "group_rename",
+          "params": [
+            [
+              "group_id",
+              "int | None",
+              "required",
+              "Project group ID to rename. Ignored when ``use_current_group`` is true."
+            ],
+            [
+              "name",
+              "str",
+              "required",
+              "New display name."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_group",
+              "bool",
+              "False",
+              "Rename the currently selected project group in the host."
+            ]
+          ],
+          "returns": "Updated project group payload from host.",
+          "signature": "evoto.project.group_rename(group_id: int | None, name: str, *, data_mode: bool = False, use_current_group: bool = False) -> dict"
+        },
+        {
+          "brief": "Get a single project by id.",
+          "example": "proj = evoto.project.info(use_current_project=True)",
+          "kind": "method",
+          "name": "info",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project identifier."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "When true, ask the host to use the currently active project."
+            ]
+          ],
+          "returns": "Project detail dict.",
+          "signature": "evoto.project.info(project_id: int | None = None, *, data_mode: bool = False, use_current_project: bool = False) -> dict"
+        },
+        {
+          "brief": "List projects.",
+          "example": "projects = evoto.project.list(use_current_group=True)\nfor p in projects:\n    print(p['name'])",
+          "kind": "method",
+          "name": "list",
+          "params": [
+            [
+              "group_id",
+              "int | None",
+              "None",
+              "Filter by folder."
+            ],
+            [
+              "include_disabled",
+              "bool",
+              "False",
+              "Include deleted/disabled projects when supported."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_group",
+              "bool",
+              "False",
+              "When true, ask the host to use the currently selected group."
+            ]
+          ],
+          "returns": "List of project dicts.",
+          "signature": "evoto.project.list(group_id: int | None = None, *, include_disabled: bool = False, data_mode: bool = False, use_current_group: bool = False) -> list"
+        },
+        {
+          "brief": "Unregister ``project.cloudDownload.completed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_download_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_download_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudDownload.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_download_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_download_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudDownload.paused`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_download_paused",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_download_paused(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudDownload.progress`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_download_progress",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_download_progress(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudImageDownload.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_image_download_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_image_download_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudImageUpload.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_image_upload_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_image_upload_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudUpload.completed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_upload_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all upload completion callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_upload_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudUpload.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_upload_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all upload failure callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_upload_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.cloudUpload.progress`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_cloud_upload_progress",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              ""
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_cloud_upload_progress(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.convertToCloud.completed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_convert_to_cloud_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all conversion completion callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_convert_to_cloud_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.convertToCloud.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_convert_to_cloud_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all conversion failure callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_convert_to_cloud_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.created`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_created",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all created-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_created(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.deleted`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_deleted",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all deleted-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_deleted(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.group.created`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_group_created",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all group-created callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_group_created(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.group.deleted`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_group_deleted",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all group-deleted callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_group_deleted(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.group.renamed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_group_renamed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all group-renamed callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_group_renamed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.renamed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_renamed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all renamed-event callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_renamed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.switch.completed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_switch_completed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all switch completion callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_switch_completed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister ``project.switch.failed`` listeners.",
+          "example": "",
+          "kind": "method",
+          "name": "off_switch_failed",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all switch failure callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.off_switch_failed(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Subscribe to every project & group lifecycle event at once.",
+          "example": "",
+          "kind": "method",
+          "name": "on_changed",
+          "params": [
+            [
+              "callback",
+              "Callable[[str, dict], None]",
+              "required",
+              "Function called as ``callback(event_name, payload)``."
+            ]
+          ],
+          "returns": "A zero-arg disposer that unregisters every listener installed by this call. Hold onto it if you want to detach later.",
+          "signature": "evoto.project.on_changed(callback: Callable[[str, dict], None]) -> Callable[[], None]"
+        },
+        {
+          "brief": "Fired after cloud project image download finishes successfully. Payload includes ``project_id``, ``success`` of ``True``, ``status`` of ``completed``, ``download_progress`` of 100 and the error-code fields (``internal_error_code``, ``local_error_code``, ``debug_code``) set to ``-1``; successful events carry no ``message`` field.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_download_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the completed payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_download_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when cloud project image download fails. Payload includes ``project_id``, ``success`` of ``False``, ``status`` of ``failed``, ``download_progress`` of 0, a language-neutral English ``message``, ``internal_error_code``, ``local_error_code`` and ``debug_code`` when available.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_download_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_download_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when cloud project image download is paused by the host. Payload includes ``project_id``, ``success`` of ``False``, ``status`` of ``paused`` and a language-neutral English ``message``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_download_paused",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the paused payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_download_paused(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when cloud project download progress changes. Payload includes ``project_id``, ``status`` of ``downloading`` and ``download_progress`` (0-100).",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_download_progress",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the progress payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_download_progress(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when a single cloud image download fails. Payload includes ``project_id``, ``file_id``, ``download_type``, ``success`` of ``False``, ``status``, a language-neutral English ``message``, ``internal_error_code``, ``local_error_code`` and ``debug_code``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_image_download_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_image_download_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when a single cloud image upload fails. Payload includes ``project_id``, ``file_id``, ``success`` of ``False``, ``status``, a language-neutral English ``message``, ``internal_error_code``, ``local_error_code`` and ``debug_code``.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_image_upload_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_image_upload_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after all images in a cloud project finish uploading. Payload includes ``project_id``, ``success`` of ``True``, ``status`` of ``completed``, ``upload_progress`` of 100 and the ``project`` object when available; successful events carry no ``message`` field.",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_upload_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the completed payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_upload_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when project image upload pauses or fails after cloud conversion. Payload includes ``project_id``, ``success`` of ``False``, ``status`` of ``failed``, a language-neutral English ``message`` and ``internal_error_code`` (plus ``local_error_code`` and ``debug_code`` when the host provides them).",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_upload_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_upload_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when project image upload progress changes. Payload includes ``project_id``, ``status`` of ``uploading`` and ``upload_progress`` (0-100).",
+          "example": "",
+          "kind": "method",
+          "name": "on_cloud_upload_progress",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the progress payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_cloud_upload_progress(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a local project is converted to a cloud project. Payload includes ``project_id``, ``team_id``, ``success`` of ``True``, ``status`` of ``completed`` and the updated ``project`` object when available; no ``message`` field.",
+          "example": "",
+          "kind": "method",
+          "name": "on_convert_to_cloud_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the completed payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_convert_to_cloud_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when a project cloud conversion fails. Payload includes ``project_id``, ``team_id``, ``success`` of ``False``, ``status`` of ``failed``, a language-neutral English ``message``, ``internal_error_code``, ``local_error_code`` and ``debug_code`` when the host provides them.",
+          "example": "",
+          "kind": "method",
+          "name": "on_convert_to_cloud_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_convert_to_cloud_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project is created. Payload is the project dict.",
+          "example": "",
+          "kind": "method",
+          "name": "on_created",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the created project payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_created(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project is moved to recycle bin.",
+          "example": "",
+          "kind": "method",
+          "name": "on_deleted",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the deleted project payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_deleted(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project group is created.",
+          "example": "",
+          "kind": "method",
+          "name": "on_group_created",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the created group payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_group_created(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project group is removed.",
+          "example": "",
+          "kind": "method",
+          "name": "on_group_deleted",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the deleted group payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_group_deleted(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project group is renamed.",
+          "example": "",
+          "kind": "method",
+          "name": "on_group_renamed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the renamed group payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_group_renamed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after a project is renamed. Payload is the project dict.",
+          "example": "",
+          "kind": "method",
+          "name": "on_renamed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the renamed project payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_renamed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired after ``project.switch`` makes the target project active.",
+          "example": "",
+          "kind": "method",
+          "name": "on_switch_completed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the completed payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_switch_completed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Fired when ``project.switch`` fails after being accepted.",
+          "example": "",
+          "kind": "method",
+          "name": "on_switch_failed",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the failure payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.project.on_switch_failed(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Rename a project.",
+          "example": "evoto.project.rename(None, \"New Name\", use_current_project=True)",
+          "kind": "method",
+          "name": "rename",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "required",
+              "Project identifier."
+            ],
+            [
+              "name",
+              "str",
+              "required",
+              "New display name."
+            ],
+            [
+              "data_mode",
+              "bool",
+              "False",
+              "Use a background-safe path that does not depend on the currently open UI state."
+            ],
+            [
+              "use_current_project",
+              "bool",
+              "False",
+              "When true, ask the host to use the currently active project."
+            ]
+          ],
+          "returns": "Updated project payload from host.",
+          "signature": "evoto.project.rename(project_id: int | None, name: str, *, data_mode: bool = False, use_current_project: bool = False) -> dict"
+        },
+        {
+          "brief": "Stop loading/downloading a cloud project by ID.",
+          "example": "result = evoto.project.stop_cloud_loading(12345)\nprint('stopped:', result.get('stopped'))",
+          "kind": "method",
+          "name": "stop_cloud_loading",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Cloud project ID whose loading should be stopped."
+            ]
+          ],
+          "returns": "Host response with ``success``, ``stopped`` and ``project_id``. ``stopped`` is ``True`` for a cloud project (the stop request is accepted regardless of whether a download is actually in progress), and ``False`` for a local project, which has no cloud loading to stop.",
+          "signature": "evoto.project.stop_cloud_loading(project_id: int) -> dict"
+        },
+        {
+          "brief": "Switch the host UI to a project.",
+          "example": "evoto.project.on_switch_completed(lambda d: print('switched:', d))\nevoto.project.on_switch_failed(lambda d: print('failed:', d.get('message')))\n\nresult = evoto.project.switch(12345)\nprint(result.get('status'))",
+          "kind": "method",
+          "name": "switch",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Project ID to switch to."
+            ]
+          ],
+          "returns": "Host response with ``success``, ``status`` and the target project payload.",
+          "signature": "evoto.project.switch(project_id: int) -> dict"
+        }
+      ],
+      "subtitle": "CRUD + listing for projects and project groups. Reached as ``evoto.project``.",
+      "title": "ProjectAPI - Project Management"
+    },
+    "UserAPI": {
+      "demo_key": "user_info_demo",
+      "import_path": "evoto.user",
+      "methods": [
+        {
+          "brief": "Return a :class:`UserInfo` snapshot of the current user.",
+          "example": "import evoto\n\nevoto.connect()\nme = evoto.user.info()\nprint(me.display_name, me.email)\nprint(f\"credits: {me.credits_remaining}/{me.credits_total}\")\nif me.has_cloud_space:\n    print(f\"cloud: {me.cloud_used_space} / {me.cloud_total_space}\")\nif me.is_subscribed:\n    print('next bill:', me.next_bill_date)",
+          "kind": "method",
+          "name": "info",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.user.info() -> UserInfo"
+        },
+        {
+          "brief": "Snapshot of the currently signed-in user. Fields: user_id, display_name, email, credits_total, credits_used, credits_remaining, has_cloud_space, cloud_used_space, cloud_total_space, next_bill_date, is_subscribed, is_vip",
+          "example": "",
+          "kind": "dataclass",
+          "name": "UserInfo",
+          "params": [
+            [
+              "user_id",
+              "int",
+              "required",
+              "Numeric user id. ``-1`` when not signed in."
+            ],
+            [
+              "display_name",
+              "str",
+              "required",
+              "Human-readable name shown in the app (may be empty)."
+            ],
+            [
+              "email",
+              "str",
+              "required",
+              "Account email; empty when the user only bound a phone."
+            ],
+            [
+              "credits_total",
+              "float",
+              "required",
+              "Total credits granted for the current billing period."
+            ],
+            [
+              "credits_used",
+              "float",
+              "required",
+              "Credits already consumed in the current billing period."
+            ],
+            [
+              "credits_remaining",
+              "float",
+              "required",
+              "Credits still available. Mirrors the in-app \"Remaining\" value (the host computes it against the subscription snapshot, so it may differ slightly from ``total - used`` due to in-flight adjustments)."
+            ],
+            [
+              "has_cloud_space",
+              "bool",
+              "required",
+              "``True`` when the account has any cloud storage entitlement. When ``False``, the two ``cloud_*`` strings are empty."
+            ],
+            [
+              "cloud_used_space",
+              "str",
+              "required",
+              "Pre-formatted used cloud storage, e.g. ``\"118.8GB\"``. The host returns the display string directly; parse it yourself if you need raw bytes."
+            ],
+            [
+              "cloud_total_space",
+              "str",
+              "required",
+              "Pre-formatted total cloud storage, e.g. ``\"2.01TB\"``."
+            ],
+            [
+              "next_bill_date",
+              "str",
+              "required",
+              "Next billing date in ``yyyy-MM-dd``; empty when no subscription is active."
+            ],
+            [
+              "is_subscribed",
+              "bool",
+              "required",
+              "``True`` while a paid subscription is running."
+            ],
+            [
+              "is_vip",
+              "bool",
+              "required",
+              "``True`` when the account holds any VIP tier."
+            ]
+          ],
+          "returns": "",
+          "signature": "@dataclass\nclass UserInfo"
+        }
+      ],
+      "subtitle": "Current user / subscription / credits info. Reached as ``evoto.user``. The ``UserInfo`` dataclass at the bottom is what ``user.info()`` returns.",
+      "title": "UserAPI - Current User Info"
+    },
+    "WatcherAPI": {
+      "demo_key": "watcher_demo",
+      "import_path": "evoto.watcher",
+      "methods": [
+        {
+          "brief": "Query the current folder watcher status.",
+          "example": "watchers = evoto.watcher.list()",
+          "kind": "method",
+          "name": "list",
+          "params": [],
+          "returns": "List with 0 or 1 watcher info dicts.",
+          "signature": "evoto.watcher.list() -> list"
+        },
+        {
+          "brief": "Return images with ``exportStatus == 0`` in the given project.",
+          "example": "images = evoto.watcher.list_unexported(12345)\nfor img in images:\n    print(img['filename'])",
+          "kind": "method",
+          "name": "list_unexported",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Target project ID."
+            ]
+          ],
+          "returns": "List of image dicts.",
+          "signature": "evoto.watcher.list_unexported(project_id: int) -> list"
+        },
+        {
+          "brief": "Batch-update the export status of images.",
+          "example": "evoto.watcher.mark_exported(image_ids=[101, 202])",
+          "kind": "method",
+          "name": "mark_exported",
+          "params": [
+            [
+              "image_ids",
+              "list[int]",
+              "required",
+              "Image ID integers."
+            ],
+            [
+              "export_status",
+              "ExportStatus | int",
+              "ExportStatus.EXPORTED",
+              "Target status, e.g. ``ExportStatus.EXPORTED`` or ``ExportStatus.UNEXPORTED``."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"updated_count\": N}``",
+          "signature": "evoto.watcher.mark_exported(*, image_ids: list[int], export_status: ExportStatus | int = ExportStatus.EXPORTED) -> dict"
+        },
+        {
+          "brief": "Unregister file-added callback.",
+          "example": "evoto.watcher.off_files_added()",
+          "kind": "method",
+          "name": "off_files_added",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all file-added callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.watcher.off_files_added(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Unregister unexported-found callback.",
+          "example": "evoto.watcher.off_unexported_found()",
+          "kind": "method",
+          "name": "off_unexported_found",
+          "params": [
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all unexported-found callbacks registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.watcher.off_unexported_found(callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Register a callback for new file detection events.",
+          "example": "def on_new(data):\n    for f in data['files']:\n        print('New file:', f)\n\nevoto.watcher.on_files_added(on_new)",
+          "kind": "method",
+          "name": "on_files_added",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with the file-added event payload."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.watcher.on_files_added(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Register a callback for ``watch.unexported.found`` events.",
+          "example": "def on_unexported(data):\n    print(f\"{data['total']} unexported images\")\n\nevoto.watcher.on_unexported_found(on_unexported)",
+          "kind": "method",
+          "name": "on_unexported_found",
+          "params": [
+            [
+              "callback",
+              "Callable[[dict], None]",
+              "required",
+              "Function called with unexported-image payloads."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.watcher.on_unexported_found(callback: Callable[[dict], None]) -> None"
+        },
+        {
+          "brief": "Query all active export monitor configurations.",
+          "example": "config = evoto.watcher.query_export_monitor()",
+          "kind": "method",
+          "name": "query_export_monitor",
+          "params": [],
+          "returns": "``{\"project_ids\": [int, ...], \"interval\": int, \"unit\": \"s\" | \"m\", \"total\": int, \"running\": bool}``",
+          "signature": "evoto.watcher.query_export_monitor() -> dict"
+        },
+        {
+          "brief": "Start watching folders for new files.",
+          "example": "from evoto.watcher import WatchFilterType\nresult = evoto.watcher.start(\n    [\"/watch/incoming\"],\n    filters=[WatchFilterType.JPG, WatchFilterType.RAW],\n    include_sub_dir=True,\n)",
+          "kind": "method",
+          "name": "start",
+          "params": [
+            [
+              "paths",
+              "list[str]",
+              "required",
+              "Directory paths to watch."
+            ],
+            [
+              "filters",
+              "list[WatchFilterType | str] | None",
+              "None",
+              "File type filters, e.g. :class:`WatchFilterType` members (``RAW`` / ``JPG`` / ``TIFF`` / ``PNG``) or their string values. ``None`` means all supported types."
+            ],
+            [
+              "include_sub_dir",
+              "bool",
+              "False",
+              "Watch subdirectories."
+            ]
+          ],
+          "returns": "``{\"watchId\": \"...\", \"paths\": [...], \"success\": True}``",
+          "signature": "evoto.watcher.start(paths: list[str], filters: list[WatchFilterType | str] | None = None, include_sub_dir: bool = False) -> dict"
+        },
+        {
+          "brief": "Add or update an export monitor for a project.",
+          "example": "evoto.watcher.start_export_monitor(12345, interval=60)",
+          "kind": "method",
+          "name": "start_export_monitor",
+          "params": [
+            [
+              "project_id",
+              "int",
+              "required",
+              "Project to monitor."
+            ],
+            [
+              "interval",
+              "int",
+              "30",
+              "Timer interval value. Must be positive."
+            ],
+            [
+              "unit",
+              "TimeUnit | str",
+              "TimeUnit.SECONDS",
+              "``TimeUnit.SECONDS`` or ``TimeUnit.MINUTES``."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"project_id\": int, \"interval\": N, \"unit\": \"s\", \"total_monitors\": N}``",
+          "signature": "evoto.watcher.start_export_monitor(project_id: int, interval: int = 30, unit: TimeUnit | str = TimeUnit.SECONDS) -> dict"
+        },
+        {
+          "brief": "Stop the current folder watcher.",
+          "example": "evoto.watcher.stop()",
+          "kind": "method",
+          "name": "stop",
+          "params": [],
+          "returns": "``{\"success\": True}``",
+          "signature": "evoto.watcher.stop() -> dict"
+        },
+        {
+          "brief": "Stop export monitor for a specific project, or all if omitted.",
+          "example": "evoto.watcher.stop_export_monitor()",
+          "kind": "method",
+          "name": "stop_export_monitor",
+          "params": [
+            [
+              "project_id",
+              "int | None",
+              "None",
+              "Project to stop monitoring; omit to stop all."
+            ]
+          ],
+          "returns": "``{\"success\": True, \"stopped_count\": N}``",
+          "signature": "evoto.watcher.stop_export_monitor(project_id: int | None = None) -> dict"
+        },
+        {
+          "brief": "Image export status flag used by :meth:`WatcherAPI.mark_exported`. Values: UNEXPORTED, EXPORTED",
+          "example": "",
+          "kind": "enum",
+          "name": "ExportStatus",
+          "params": [
+            [
+              "UNEXPORTED",
+              "int",
+              "0",
+              "Image export status flag used by :meth:`WatcherAPI.mark_exported`."
+            ],
+            [
+              "EXPORTED",
+              "int",
+              "1",
+              "Image export status flag used by :meth:`WatcherAPI.mark_exported`."
+            ]
+          ],
+          "returns": "",
+          "signature": "class ExportStatus(IntEnum)"
+        },
+        {
+          "brief": "Timer interval unit for :meth:`WatcherAPI.start_export_monitor`. Values: SECONDS, MINUTES",
+          "example": "",
+          "kind": "enum",
+          "name": "TimeUnit",
+          "params": [
+            [
+              "SECONDS",
+              "str",
+              "'s'",
+              "Timer interval unit for :meth:`WatcherAPI.start_export_monitor`."
+            ],
+            [
+              "MINUTES",
+              "str",
+              "'m'",
+              "Timer interval unit for :meth:`WatcherAPI.start_export_monitor`."
+            ]
+          ],
+          "returns": "",
+          "signature": "class TimeUnit(str)"
+        },
+        {
+          "brief": "Allowed values for :meth:`WatcherAPI.start`'s ``filters`` argument. Values: RAW, JPG, TIFF, PNG",
+          "example": "",
+          "kind": "enum",
+          "name": "WatchFilterType",
+          "params": [
+            [
+              "RAW",
+              "str",
+              "'raw'",
+              "Allowed values for :meth:`WatcherAPI.start`'s ``filters`` argument."
+            ],
+            [
+              "JPG",
+              "str",
+              "'jpg'",
+              "Allowed values for :meth:`WatcherAPI.start`'s ``filters`` argument."
+            ],
+            [
+              "TIFF",
+              "str",
+              "'tiff'",
+              "Allowed values for :meth:`WatcherAPI.start`'s ``filters`` argument."
+            ],
+            [
+              "PNG",
+              "str",
+              "'png'",
+              "Allowed values for :meth:`WatcherAPI.start`'s ``filters`` argument."
+            ]
+          ],
+          "returns": "",
+          "signature": "class WatchFilterType(str)"
+        }
+      ],
+      "subtitle": "Folder watching plus the per-project export monitor. Reached as ``evoto.watcher``. ``ExportStatus`` and ``TimeUnit`` enums are listed at the bottom.",
+      "title": "WatcherAPI - Folder Watch & Export Monitor"
+    },
+    "evoto": {
+      "demo_key": null,
+      "import_path": "import evoto",
+      "methods": [
+        {
+          "brief": "Connect to the host without blocking the UI thread.",
+          "example": "import evoto\n\nevoto.connect()\nprint('Connected:', evoto.host.is_connected)",
+          "kind": "method",
+          "name": "connect",
+          "params": [
+            [
+              "socket_path",
+              "str | None",
+              "None",
+              "Internal override. Leave unset in normal plugins."
+            ],
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "Maximum seconds to wait for connection and handshake."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.connect(socket_path: str | None = None, timeout: float = 10.0) -> None"
+        },
+        {
+          "brief": "Connect to the host and block until shutdown.",
+          "example": "import evoto\n\n@evoto.task\ndef hello(name: str) -> str:\n    return f\"Hello, {name}!\"\n\nevoto.run()",
+          "kind": "method",
+          "name": "run",
+          "params": [
+            [
+              "socket_path",
+              "str | None",
+              "None",
+              "Internal override. Leave unset in normal plugins."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.run(socket_path: str | None = None) -> None"
+        },
+        {
+          "brief": "Tear down the SDK transport and release runtime resources.",
+          "example": "evoto.shutdown()",
+          "kind": "method",
+          "name": "shutdown",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.shutdown() -> None"
+        },
+        {
+          "brief": "Close the transport without clearing registered tasks or callbacks.",
+          "example": "evoto.disconnect()",
+          "kind": "method",
+          "name": "disconnect",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.disconnect() -> None"
+        },
+        {
+          "brief": "Register a callback for host shutdown or SDK disconnect.",
+          "example": "def cleanup():\n    print('Shutting down...')\n\nevoto.on_shutdown(cleanup)",
+          "kind": "method",
+          "name": "on_shutdown",
+          "params": [
+            [
+              "callback",
+              "Callable[[], NoneType]",
+              "required",
+              "Zero-argument function called when the host disconnects or the SDK shuts down."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.on_shutdown(callback: Callable[[], NoneType]) -> None"
+        },
+        {
+          "brief": "Register a plugin task.",
+          "example": "",
+          "kind": "method",
+          "name": "task",
+          "params": [
+            [
+              "func",
+              "Callable | None",
+              "None",
+              "Function supplied automatically when used as ``@evoto.task``."
+            ],
+            [
+              "name",
+              "str | None",
+              "None",
+              "Optional task name exposed to the host. Defaults to the function name."
+            ],
+            [
+              "inline",
+              "bool",
+              "False",
+              "Run the task on the SDK receiver thread when true. Use only for very fast, non-blocking callbacks."
+            ]
+          ],
+          "returns": "Decorator or the original function, matching normal decorator usage.",
+          "signature": "evoto.task(func: Callable | None = None, *, name: str | None = None, inline: bool = False) -> Callable"
+        },
+        {
+          "brief": "Subscribe to a host event.",
+          "example": "def on_export_done(data):\n    print('Export completed:', data)\n\nevoto.on('export.completed', on_export_done)",
+          "kind": "method",
+          "name": "on",
+          "params": [
+            [
+              "event_name",
+              "str",
+              "required",
+              "Event name, such as ``\"export.completed\"``."
+            ],
+            [
+              "callback",
+              "Callable[[dict], NoneType]",
+              "required",
+              "Function called with the event payload dict."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.on(event_name: str, callback: Callable[[dict], NoneType]) -> None"
+        },
+        {
+          "brief": "Unsubscribe from a host event.",
+          "example": "evoto.off('export.completed', on_export_done)",
+          "kind": "method",
+          "name": "off",
+          "params": [
+            [
+              "event_name",
+              "str",
+              "required",
+              "Event name to detach from."
+            ],
+            [
+              "callback",
+              "Callable | None",
+              "None",
+              "Callback to remove. Omit to remove all callbacks for the event registered by this client."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.off(event_name: str, callback: Callable | None = None) -> None"
+        },
+        {
+          "brief": "Forward a log message to the host when connected.",
+          "example": "evoto.log('Processing started', level='info')",
+          "kind": "method",
+          "name": "log",
+          "params": [
+            [
+              "message",
+              "str",
+              "required",
+              "Log message text."
+            ],
+            [
+              "level",
+              "str",
+              "'info'",
+              "Log level string, such as ``\"info\"``, ``\"warning\"`` or ``\"error\"``."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.log(message: str, level: str = 'info') -> None"
+        }
+      ],
+      "subtitle": "``import evoto`` is the product itself: connect, register tasks, subscribe to events, and reach every domain API through module attributes.",
+      "title": "evoto - Top-level Facade"
+    },
+    "host": {
+      "demo_key": "runtime_demo",
+      "import_path": "evoto.host",
+      "methods": [
+        {
+          "brief": "Blocking JSON-RPC call to the host.",
+          "example": "result = evoto.host.call('image.list', {'project_id': 42})",
+          "kind": "method",
+          "name": "call",
+          "params": [
+            [
+              "method",
+              "str",
+              "required",
+              "Raw RPC command name, such as ``\"image.list\"``."
+            ],
+            [
+              "params",
+              "dict",
+              "required",
+              "JSON-compatible parameter dict for the command."
+            ],
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "Maximum seconds to wait for the reply."
+            ],
+            [
+              "binary_data",
+              "bytes | None",
+              "None",
+              "Optional binary payload for commands that support it."
+            ]
+          ],
+          "returns": "Result payload returned by the host.",
+          "signature": "evoto.host.call(method: str, params: dict, timeout: float = 30.0, binary_data: bytes | None = None) -> dict"
+        },
+        {
+          "brief": "Async JSON-RPC call.",
+          "example": "def done(result, status):\n    print('async result:', result)\n\nreq_id = evoto.host.call_async('image.list', {}, done)",
+          "kind": "method",
+          "name": "call_async",
+          "params": [
+            [
+              "method",
+              "str",
+              "required",
+              "Raw RPC command name."
+            ],
+            [
+              "params",
+              "dict",
+              "required",
+              "JSON-compatible parameter dict for the command."
+            ],
+            [
+              "callback",
+              "Callable",
+              "required",
+              "Function called as ``callback(result, status)`` when the request finishes."
+            ],
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "Maximum seconds to wait before the request fails."
+            ],
+            [
+              "binary_data",
+              "bytes | None",
+              "None",
+              "Optional binary payload for commands that support it."
+            ]
+          ],
+          "returns": "Request ID that can be passed to :meth:`cancel_request`.",
+          "signature": "evoto.host.call_async(method: str, params: dict, callback: Callable, timeout: float = 30.0, binary_data: bytes | None = None) -> str"
+        },
+        {
+          "brief": "Cancel a pending async request by ID.",
+          "example": "evoto.host.cancel_request(req_id)",
+          "kind": "method",
+          "name": "cancel_request",
+          "params": [
+            [
+              "request_id",
+              "str",
+              "required",
+              "Request ID returned by :meth:`call_async`."
+            ]
+          ],
+          "returns": "True when a pending request was found and cancelled.",
+          "signature": "evoto.host.cancel_request(request_id: str) -> bool"
+        },
+        {
+          "brief": "Configure the silent-mode auto-exit watcher (``host.silentTimeout``).",
+          "example": "import evoto\n\n# Requires a background host: Evoto -silent\nevoto.connect()\n\n# Keep the silent host alive indefinitely\nevoto.host.configure_silent_timeout(timeout_seconds=0)\n\n# Show the UI instead of quitting when nobody attaches\n# within 10 minutes (default action is quit)\nevoto.host.configure_silent_timeout(600, 'show')",
+          "kind": "method",
+          "name": "configure_silent_timeout",
+          "params": [
+            [
+              "timeout_seconds",
+              "int | None",
+              "None",
+              "new timeout in seconds (``<= 0`` disables auto-exit); ``None`` keeps the current value."
+            ],
+            [
+              "action",
+              "str | None",
+              "None",
+              "``\"quit\"`` or ``\"show\"``; ``None`` keeps the current."
+            ],
+            [
+              "timeout",
+              "float",
+              "5.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "Host acknowledgement payload.",
+          "signature": "evoto.host.configure_silent_timeout(timeout_seconds: int | None = None, action: str | None = None, timeout: float = 5.0) -> dict"
+        },
+        {
+          "brief": "Return the host endpoint if the listener exists, else None.",
+          "example": "path = evoto.host.discover_host()",
+          "kind": "method",
+          "name": "discover_host",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.host.discover_host() -> str | None"
+        },
+        {
+          "brief": "True if the host endpoint can be discovered right now.",
+          "example": "print(evoto.host.is_available())",
+          "kind": "method",
+          "name": "is_available",
+          "params": [],
+          "returns": "None",
+          "signature": "evoto.host.is_available() -> bool"
+        },
+        {
+          "brief": "Ask the host to shut itself down.",
+          "example": "import evoto\n\nevoto.connect()\nevoto.host.quit()              # clean shutdown\nevoto.host.quit(relaunch=True) # restart after quitting",
+          "kind": "method",
+          "name": "quit",
+          "params": [
+            [
+              "relaunch",
+              "bool",
+              "False",
+              "Relaunch the host after shutdown when true."
+            ],
+            [
+              "timeout",
+              "float",
+              "5.0",
+              "RPC timeout in seconds."
+            ]
+          ],
+          "returns": "Host acknowledgement payload.",
+          "signature": "evoto.host.quit(relaunch: bool = False, timeout: float = 5.0) -> dict"
+        },
+        {
+          "brief": "Disconnect, if connected, then establish a fresh connection.",
+          "example": "evoto.host.reconnect()",
+          "kind": "method",
+          "name": "reconnect",
+          "params": [
+            [
+              "socket_path",
+              "str | None",
+              "None",
+              "Internal override. Leave unset in normal plugins."
+            ],
+            [
+              "timeout",
+              "float",
+              "10.0",
+              "Maximum seconds to wait for connection and handshake."
+            ]
+          ],
+          "returns": "None",
+          "signature": "evoto.host.reconnect(socket_path: str | None = None, timeout: float = 10.0) -> None"
+        },
+        {
+          "brief": "Poll until the host endpoint appears.",
+          "example": "if evoto.host.wait_for_host(timeout=60):\n    evoto.connect()",
+          "kind": "method",
+          "name": "wait_for_host",
+          "params": [
+            [
+              "timeout",
+              "float",
+              "30.0",
+              "Maximum seconds to wait."
+            ],
+            [
+              "poll_interval",
+              "float",
+              "1.0",
+              "Seconds between discovery attempts."
+            ]
+          ],
+          "returns": "Endpoint path when a host is found, otherwise ``None``.",
+          "signature": "evoto.host.wait_for_host(timeout: float = 30.0, poll_interval: float = 1.0) -> str | None"
+        }
+      ],
+      "subtitle": "Raw JSON-RPC, host-process discovery, and host lifecycle. Evoto itself can run in the background when its executable is started with -silent; the SDK connects to it the same way. Reach for it only when the domain APIs are not enough.",
+      "title": "evoto.host - Low-level Host Handle"
+    }
+  },
+  "MODULE_ORDER": [
+    "evoto",
+    "host",
+    "ProjectAPI",
+    "ImageAPI",
+    "PresetAPI",
+    "ExportAPI",
+    "ExportOptions",
+    "WatcherAPI",
+    "UserAPI",
+    "MetadataAPI",
+    "LibraryAPI",
+    "CullingAPI",
+    "EditAPI",
+    "FaceAPI"
+  ],
+  "SIDEBAR_DISPLAY_NAMES": {
+    "CullingAPI": "Culling",
+    "EditAPI": "Edit",
+    "ExportAPI": "Export",
+    "ExportOptions": "Export Options",
+    "FaceAPI": "Face Detect",
+    "ImageAPI": "Image",
+    "LibraryAPI": "Library",
+    "MetadataAPI": "Metadata",
+    "PresetAPI": "Preset",
+    "ProjectAPI": "Project",
+    "UserAPI": "User Info",
+    "WatcherAPI": "Watcher",
+    "evoto": "Top-level",
+    "host": "Host"
+  },
+  "TOOL_BUNDLES_ORDER": [
+    "__hot_folder__"
+  ],
+  "TOOL_BUNDLE_DATA": {
+    "__hot_folder__": {
+      "demo_key": "hot_folder_demo",
+      "import_path": "demo/hot_folder_demo/main.py",
+      "key": "__hot_folder__",
+      "members_clickable": false,
+      "members_heading": "Highlights",
+      "methods": [
+        {
+          "brief": "Route each watched folder to its own export directory and preset suits",
+          "name": "Folder -> Export mapping table",
+          "params": []
+        },
+        {
+          "brief": "Optionally spawn the Evoto executable with -silent so the host runs in the background with no UI, then auto-reconnect",
+          "name": "Silent Evoto launcher",
+          "params": []
+        },
+        {
+          "brief": "Live status (X/Y) and lifecycle events from the host",
+          "name": "Per-lane progress + event log",
+          "params": []
+        },
+        {
+          "brief": "Stop button asks Evoto to shut down via the runtime helper; falls back to local kill",
+          "name": "evoto.host.quit() integration",
+          "params": []
+        }
+      ],
+      "subtitle": "End-to-end workflow demo: folder watcher -> async import -> multi-preset export, all driven by a shared ``config.json``.",
+      "title": "Hot Folder Tool"
+    }
+  },
+  "WORKFLOW_GROUPS": [
+    {
+      "items": [
+        "evoto",
+        "host"
+      ]
+    },
+    {
+      "items": [
+        "ProjectAPI"
+      ]
+    },
+    {
+      "items": [
+        "ImageAPI"
+      ]
+    },
+    {
+      "items": [
+        "PresetAPI"
+      ]
+    },
+    {
+      "items": [
+        "ExportAPI"
+      ]
+    },
+    {
+      "items": [
+        "ExportOptions"
+      ]
+    },
+    {
+      "items": [
+        "WatcherAPI"
+      ]
+    },
+    {
+      "items": [
+        "UserAPI"
+      ]
+    },
+    {
+      "items": [
+        "MetadataAPI",
+        "LibraryAPI",
+        "CullingAPI",
+        "EditAPI",
+        "FaceAPI"
+      ],
+      "label": "Automation"
+    }
+  ]
+}

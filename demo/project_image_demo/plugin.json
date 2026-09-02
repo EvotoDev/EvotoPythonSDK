@@ -1,0 +1,8 @@
+{
+    "id": "project_image_demo",
+    "name": "Project & Image Explorer Demo",
+    "version": "1.0.0",
+    "description": "Demo for Project and Image APIs with a two-level tree (Group > Project) and image list",
+    "entry": "main.py",
+    "dependencies": []
+}

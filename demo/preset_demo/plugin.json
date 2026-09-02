@@ -1,0 +1,8 @@
+{
+    "id": "preset_demo",
+    "name": "Preset API Demo",
+    "version": "1.0.0",
+    "description": "Demo for testing the Preset API (list / apply / reset)",
+    "entry": "main.py",
+    "dependencies": []
+}

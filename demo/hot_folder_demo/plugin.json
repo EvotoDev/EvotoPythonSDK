@@ -1,0 +1,8 @@
+{
+    "id": "hot_folder_demo",
+    "name": "Hot Folder Workflow Demo",
+    "version": "1.0.0",
+    "description": "Table-driven hot-folder pipeline: watch folders, import new images into a shared project, then export each lane with its own preset suit and ExportOptions (mirrors sub-folder structure on the output side).",
+    "entry": "main.py",
+    "dependencies": []
+}
