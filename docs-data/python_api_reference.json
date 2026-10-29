@@ -673,7 +673,7 @@
               "options",
               "dict | None",
               "None",
-              "Optional overrides built with :class:`~evoto.export_options.ExportOptions`."
+              "Optional overrides built with :class:`~evoto.export_options.ExportOptions`. Use :meth:`~evoto.export_options.ExportOptions.crop_transparent` to trim fully transparent margins from PNG/TIFF output."
             ]
           ],
           "returns": "Host acceptance response including ``accepted``, ``export_dir_id``, ``export_dir`` and ``requested_count``. Use :meth:`query` or export lifecycle events for ``export_name`` and per-item details. The response is returned only after required effect presets are ready; the export then continues asynchronously with the existing event contract. If preparation fails, the call raises ``ApiError`` instead of returning an acceptance response: code ``404`` identifies an unknown suit ID, and code ``503`` identifies a download or local validation failure.",
@@ -714,10 +714,16 @@
               "str | None",
               "None",
               "Optional UUID tag for event filtering."
+            ],
+            [
+              "crop_transparent",
+              "bool",
+              "False",
+              "When ``True``, crop transparent output to the bounding box of visible pixels, removing fully transparent margins. Defaults to ``False``. Every selected export preset must use an output format with an alpha channel (PNG, TIFF or original); a preset that exports JPEG makes the host reject the request with code ``400``. See :meth:`evoto.export_options.ExportOptions.crop_transparent` for the full behaviour. Requires Evoto 8.1.0 or later."
             ]
           ],
           "returns": "Host acceptance response including ``accepted``, ``export_dir_id`` and ``requested_count``. Use :meth:`query` or export lifecycle events for ``export_name`` and per-item details. The response is returned only after required effect presets are ready; the export then continues asynchronously with the existing event contract. If preparation fails, the call raises ``ApiError`` instead of returning an acceptance response: code ``404`` identifies an unknown suit ID, and code ``503`` identifies a download or local validation failure.",
-          "signature": "evoto.export.start_with_export_preset(project_id: int, export_preset_ids: list[str], *, imageIds: list[int], preset_suit_ids: list[str] | None = None, export_listener_uuid: str | None = None) -> dict"
+          "signature": "evoto.export.start_with_export_preset(project_id: int, export_preset_ids: list[str], *, imageIds: list[int], preset_suit_ids: list[str] | None = None, export_listener_uuid: str | None = None, crop_transparent: bool = False) -> dict"
         },
         {
           "brief": "Subscribe to export lifecycle events on the host.",
@@ -810,6 +816,22 @@
           ],
           "returns": "None",
           "signature": "ExportOptions.create_subdir(name: str) -> ExportOptions"
+        },
+        {
+          "brief": "Crop transparent output to the bounding box of visible pixels.",
+          "example": "",
+          "kind": "method",
+          "name": "crop_transparent",
+          "params": [
+            [
+              "enable",
+              "bool",
+              "True",
+              "``True`` to crop transparent margins, ``False`` to keep the full canvas."
+            ]
+          ],
+          "returns": "None",
+          "signature": "ExportOptions.crop_transparent(enable: bool = True) -> ExportOptions"
         },
         {
           "brief": "Set output DPI metadata.",

@@ -182,6 +182,7 @@ class ExportOptions:
     KEY_WATERMARK_V_OFFSET = ExportOption.WATERMARK_V_OFFSET
     KEY_CREATE_SUBDIR = ExportOption.CREATE_SUBDIR
     KEY_SUBDIR_NAME = ExportOption.SUBDIR_NAME
+    KEY_CROP_TRANSPARENT = ExportOption.CROP_TRANSPARENT
 
     def __init__(self) -> None:
         self._data: dict = {}
@@ -407,6 +408,45 @@ class ExportOptions:
         self._data[self.KEY_WATERMARK_ROTATION] = rotation
         self._data[self.KEY_WATERMARK_H_OFFSET] = h_offset
         self._data[self.KEY_WATERMARK_V_OFFSET] = v_offset
+        return self
+
+    # -- Transparent crop ----------------------------------------------
+
+    def crop_transparent(self, enable: bool = True) -> ExportOptions:
+        """Crop transparent output to the bounding box of visible pixels.
+
+        When enabled, the host trims every fully transparent row and column
+        around the image before writing the file, so a cut-out subject is
+        saved without empty margins. The option is off unless this method
+        is called.
+
+        Notes:
+            * Only output formats with an alpha channel are cropped
+              (``FileFormat.PNG``, ``FileFormat.TIFF_8BIT``,
+              ``FileFormat.TIFF_16BIT``). With ``FileFormat.JPEG`` the host
+              rejects the request with ``ApiError`` code ``400``. With
+              ``FileFormat.ORIGINAL`` only sources that keep an alpha
+              channel are cropped.
+            * Cropping runs last, after watermarking and scaling. The file
+              can therefore be smaller than the configured scale size, and
+              a watermark placed over a transparent area can be cropped
+              away.
+            * Pixels with any non-zero alpha (including semi-transparent
+              ones) count as visible, so faint matting noise near the edge
+              can enlarge the crop box.
+            * The image is saved uncropped when it has no alpha channel,
+              when it is fully transparent, or when the bounding box already
+              covers the whole image.
+            * Image sizes reported by export events are the pre-crop sizes.
+              Read the output file to get the final dimensions.
+            * Requires Evoto 8.1.0 or later. Earlier versions ignore the key
+              and export the image uncropped.
+
+        Args:
+            enable: ``True`` to crop transparent margins, ``False`` to keep
+                the full canvas.
+        """
+        self._data[self.KEY_CROP_TRANSPARENT] = bool(enable)
         return self
 
     # -- Build ---------------------------------------------------------

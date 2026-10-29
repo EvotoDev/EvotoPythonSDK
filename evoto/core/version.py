@@ -7,7 +7,7 @@ Single source for SDK version plus compare / constraint checks.
 import re
 
 # SDK version - single source of truth
-SDK_VERSION = "3.0.0"
+SDK_VERSION = "3.0.1"
 
 # Minimum host API version required by this SDK
 MIN_API_VERSION = "1.0.0"

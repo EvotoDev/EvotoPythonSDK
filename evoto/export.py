@@ -80,6 +80,7 @@ class ExportAPI:
         imageIds: list[int],
         preset_suit_ids: list[str] | None = None,
         export_listener_uuid: str | None = None,
+        crop_transparent: bool = False,
     ) -> dict:
         """Export images using saved export setting preset(s).
 
@@ -104,6 +105,14 @@ class ExportAPI:
             preset_suit_ids: Optional effect preset IDs to override the
                 export preset's built-in effect preset configuration.
             export_listener_uuid: Optional UUID tag for event filtering.
+            crop_transparent: When ``True``, crop transparent output to the
+                bounding box of visible pixels, removing fully transparent
+                margins. Defaults to ``False``. Every selected export preset
+                must use an output format with an alpha channel (PNG, TIFF or
+                original); a preset that exports JPEG makes the host reject
+                the request with code ``400``. See
+                :meth:`evoto.export_options.ExportOptions.crop_transparent`
+                for the full behaviour. Requires Evoto 8.1.0 or later.
 
         Returns:
             Host acceptance response including ``accepted``, ``export_dir_id``
@@ -117,9 +126,11 @@ class ExportAPI:
             validation failure.
 
         Raises:
-            ApiError: ``404`` if an effective preset suit ID is unknown;
-                ``503`` if required preset assets cannot be downloaded or
-                validated. No export task is accepted in either case.
+            ApiError: ``400`` if ``crop_transparent`` is set and a selected
+                export preset exports JPEG; ``404`` if an effective preset
+                suit ID is unknown; ``503`` if required preset assets cannot
+                be downloaded or validated. No export task is accepted in
+                any of these cases.
         """
         if not export_preset_ids:
             raise ValueError("export_preset_ids must be a non-empty list")
@@ -132,6 +143,8 @@ class ExportAPI:
             payload[ExportField.PRESET_SUIT_IDS] = preset_suit_ids
         if export_listener_uuid:
             payload[ExportField.EXPORT_LISTENER_UUID] = export_listener_uuid
+        if crop_transparent:
+            payload[ExportField.CROP_TRANSPARENT] = True
         return self._client.call(
             ExportCmd.START_WITH_EXPORT_PRESET,
             payload,
@@ -194,7 +207,9 @@ class ExportAPI:
             export_listener_uuid: Optional UUID tag for event filtering and
                 reconnect recovery.
             options: Optional overrides built with
-                :class:`~evoto.export_options.ExportOptions`.
+                :class:`~evoto.export_options.ExportOptions`. Use
+                :meth:`~evoto.export_options.ExportOptions.crop_transparent`
+                to trim fully transparent margins from PNG/TIFF output.
 
         Returns:
             Host acceptance response including ``accepted``, ``export_dir_id``,
@@ -208,9 +223,11 @@ class ExportAPI:
             download or local validation failure.
 
         Raises:
-            ApiError: ``404`` if a preset suit ID is unknown; ``503`` if
-                required preset assets cannot be downloaded or validated. No
-                export task is accepted in either case.
+            ApiError: ``400`` if ``options`` enables ``crop_transparent``
+                while the effective output format is JPEG; ``404`` if a
+                preset suit ID is unknown; ``503`` if required preset assets
+                cannot be downloaded or validated. No export task is accepted
+                in any of these cases.
         """
         if not preset_suit_ids:
             raise ValueError("preset_suit_ids must be a non-empty list")

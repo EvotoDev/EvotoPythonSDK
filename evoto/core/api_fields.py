@@ -277,6 +277,7 @@ class ExportField:
     EXPORT_PRESET_IDS = "export_preset_ids"
     EXPORT_PRESETS = "export_presets"
     EXPORT_LISTENER_UUID = "export_listener_uuid"
+    CROP_TRANSPARENT = "crop_transparent"
     EXPORT_NAME = "export_name"
     EXPORT_DIR_ID = "export_dir_id"
     STATE = "state"
@@ -340,6 +341,7 @@ class ExportOption:
     WATERMARK_OPACITY = "watermark_opacity"
     WATERMARK_H_OFFSET = "watermark_h_offset"
     WATERMARK_V_OFFSET = "watermark_v_offset"
+    CROP_TRANSPARENT = "crop_transparent"
 
 
 # ---------------------------------------------------------------------------

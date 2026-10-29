@@ -91,7 +91,7 @@ options = (
     ExportOptions()
     .file_format(FileFormat.JPEG)
     .quality(90)
-    .to_dict()
+    .build()
 )
 
 task = evoto.export.start_with_custom(
@@ -138,6 +138,11 @@ python -m http.server 8000 -d site
 ```
 
 Then open `http://127.0.0.1:8000/`.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each release and the
+Evoto version it is built for.
 
 ## License
 
